@@ -1,11 +1,11 @@
 ;;; transient.el --- Transient commands          -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018-2020  Free Software Foundation, Inc.
+;; Copyright (C) 2018-2021  Free Software Foundation, Inc.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/magit/transient
 ;; Package-Requires: ((emacs "25.1"))
-;; Package-Version: 0
+;; Package-Version: 0.3.0
 ;; Keywords: bindings
 
 ;; This file is part of GNU Emacs.
@@ -56,14 +56,6 @@
 
 (eval-when-compile
   (require 'subr-x))
-
-(and (require 'async-bytecomp nil t)
-     (let ((pkgs (bound-and-true-p async-bytecomp-allowed-packages)))
-       (if (consp pkgs)
-           (cl-intersection '(all magit transient) pkgs)
-         (memq pkgs '(all t))))
-     (fboundp 'async-bytecomp-package-mode)
-     (async-bytecomp-package-mode 1))
 
 (declare-function info 'info)
 (declare-function Man-find-section 'man)
@@ -291,7 +283,7 @@ used."
   :type 'boolean)
 
 (defcustom transient-force-fixed-pitch nil
-  "Whether to force used of monospaced font in popup buffer.
+  "Whether to force use of monospaced font in the popup buffer.
 
 Even if you use a proportional font for the `default' face,
 you might still want to use a monospaced font in transient's
@@ -1058,10 +1050,22 @@ example, sets a variable use `transient-define-infix' instead.
      (t
       (when (and (listp suffix)
                  (listp elt))
+        ;; Both suffixes are key bindings; not heading strings.
         (let ((key (transient--spec-key suf)))
           (if (equal (transient--kbd key)
                      (transient--kbd (transient--spec-key elt)))
-              (setq action 'replace)
+              ;; We must keep `mem' until after we have inserted
+              ;; behind it, which `transient-remove-suffix' does
+              ;; not allow us to do.
+              (let ((spred (transient--suffix-predicate suf))
+                    (epred (transient--suffix-predicate elt)))
+                ;; If both suffixes have a predicate and they
+                ;; are not identical, then there is a high
+                ;; probability that we want to keep both.
+                (when (or (not spred)
+                          (not epred)
+                          (equal spred epred))
+                  (setq action 'replace)))
             (transient-remove-suffix prefix key))))
       (cl-ecase action
         (insert  (setcdr mem (cons elt (cdr mem)))
@@ -1618,9 +1622,8 @@ be nil and PARAMS may be (but usually is not) used to set e.g. the
 This function is also called internally in which case LAYOUT and
 EDIT may be non-nil."
   (transient--debug 'setup)
-  (when (and (>= (minibuffer-depth) 1) transient--prefix)
-    (error "Cannot invoke %s while minibuffer is active %s"
-           this-command "on behalf of another prefix command"))
+  (when (> (minibuffer-depth) 0)
+    (user-error "Cannot invoke transient %s while minibuffer is active"))
   (transient--with-emergency-exit
     (cond
      ((not name)
@@ -1629,6 +1632,12 @@ EDIT may be non-nil."
       (transient--pop-keymap 'transient--redisplay-map)
       (setq name (oref transient--prefix command))
       (setq params (list :scope (oref transient--prefix scope))))
+     (transient--transient-map
+      ;; Invoked as a ":transient-non-suffix 'transient--do-{stay,call}"
+      ;; of an outer prefix.  Unlike the usual `transient--do-replace',
+      ;; these predicates fail to clean up after the outer prefix.
+      (transient--pop-keymap 'transient--transient-map)
+      (transient--pop-keymap 'transient--redisplay-map))
      ((not (or layout                      ; resuming parent/suspended prefix
                transient-current-command)) ; entering child prefix
       (transient--stack-zap))              ; replace suspended prefix, if any
@@ -1797,6 +1806,20 @@ value.  Otherwise return CHILDREN as is."
                           (apply #'derived-mode-p if-not-derived))))
    (t default)))
 
+(defun transient--suffix-predicate (spec)
+  (let ((plist (nth 2 spec)))
+    (seq-some (lambda (prop)
+                (when-let ((pred (plist-get plist prop)))
+                  (list prop pred)))
+              '( :if :if-not
+                 :if-nil :if-non-nil
+                 :if-mode :if-not-mode
+                 :if-derived :if-not-derived
+                 :inapt-if :inapt-if-not
+                 :inapt-if-nil :inapt-if-non-nil
+                 :inapt-if-mode :inapt-if-not-mode
+                 :inapt-if-derived :inapt-if-not-derived))))
+
 ;;; Flow-Control
 
 (defun transient--init-transient ()
@@ -1865,7 +1888,8 @@ value.  Otherwise return CHILDREN as is."
   (transient--pop-keymap 'transient--redisplay-map)
   (remove-hook 'pre-command-hook #'transient--pre-command)
   (unless transient--showp
-    (message ""))
+    (let ((message-log-max nil))
+      (message "")))
   (setq transient--transient-map nil)
   (setq transient--predicate-map nil)
   (setq transient--redisplay-map nil)
@@ -2008,8 +2032,11 @@ value.  Otherwise return CHILDREN as is."
 (defun transient--debug (arg &rest args)
   (when transient--debug
     (if (symbolp arg)
-        (message "-- %-16s (cmd: %s, exit: %s)"
-                 arg this-command transient--exitp)
+        (message "-- %-16s (cmd: %s, event: %S, exit: %s)"
+                 arg
+                 (transient--suffix-symbol this-command)
+                 (key-description (this-command-keys-vector))
+                 transient--exitp)
       (apply #'message arg args))))
 
 (defun transient--emergency-exit ()
@@ -2489,11 +2516,11 @@ stand-alone command."
 
 (defun transient-read-directory (prompt _initial-input _history)
   "Read a directory."
-  (expand-file-name (read-directory-name prompt)))
+  (file-local-name (expand-file-name (read-directory-name prompt))))
 
 (defun transient-read-existing-directory (prompt _initial-input _history)
   "Read an existing directory."
-  (expand-file-name (read-directory-name prompt nil nil t)))
+  (file-local-name (expand-file-name (read-directory-name prompt nil nil t))))
 
 (defun transient-read-number-N0 (prompt initial-input history)
   "Read a natural number (including zero) and return it as a string."
@@ -3554,7 +3581,7 @@ we stop there."
 
 (cl-defmethod transient-format-description ((obj transient-lisp-variable))
   (or (oref obj description)
-      (oref obj variable)))
+      (symbol-name (oref obj variable))))
 
 (cl-defmethod transient-format-value ((obj transient-lisp-variable))
   (propertize (prin1-to-string (oref obj value))
