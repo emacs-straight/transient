@@ -911,7 +911,7 @@ functions.  Different infix commands behave differently because
 the concrete methods are different for different infix command
 classes.  In rare case the above command function might not be
 suitable, even if you define your own infix command class.  In
-that case you have to use `transient-suffix-command' to define
+that case you have to use `transient-define-suffix' to define
 the infix command and use t as the value of the `:transient'
 keyword.
 
@@ -2473,6 +2473,7 @@ Otherwise call the primary method according to object's class."
               (argument (and (slot-boundp obj 'argument)
                              (oref obj argument)))
               (multi-value (oref obj multi-value))
+              (case-fold-search nil)
               (regexp (if (slot-exists-p obj 'argument-regexp)
                           (oref obj argument-regexp)
                         (format "\\`%s\\(.*\\)" (oref obj argument)))))
@@ -2822,7 +2823,8 @@ a string, using the empty string for the empty value, or nil if
 the option does not appear in ARGS."
   (if (string-match-p "=\\'" arg)
       (save-match-data
-        (when-let ((match (let ((re (format "\\`%s\\(?:=\\(.+\\)\\)?\\'"
+        (when-let ((match (let ((case-fold-search nil)
+                                (re (format "\\`%s\\(?:=\\(.+\\)\\)?\\'"
                                             (substring arg 0 -1))))
                             (cl-find-if (lambda (a)
                                           (and (stringp a)
@@ -3637,6 +3639,19 @@ search instead."
            (string-prefix-p "edebug" (symbol-name this-command)))))
 
 ;;;; Miscellaneous
+
+(with-eval-after-load 'lisp-mode
+  (cl-pushnew (list nil (concat "^\\s-*("
+                                (eval-when-compile
+			          (regexp-opt
+			           '("transient-define-prefix"
+                                     "transient-define-suffix"
+                                     "transient-define-infix"
+                                     "transient-define-argument")
+                                   t))
+		                "\\s-+\\(" lisp-mode-symbol-regexp "\\)")
+	            2)
+              lisp-imenu-generic-expression :test #'equal))
 
 (declare-function which-key-mode "which-key" (&optional arg))
 

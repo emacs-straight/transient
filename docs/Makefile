@@ -7,8 +7,7 @@ info: $(PKG).info dir
 html: $(PKG).html
 pdf:  $(PKG).pdf
 
-ORG_ARGS  = --batch -Q $(ORG_LOAD_PATH) -l ox-texinfo+
-ORG_EVAL  = --eval "(setq org-texinfo+-dissolve-noexport-headlines t)"
+ORG_ARGS  = --batch -Q $(ORG_LOAD_PATH)
 ORG_EVAL += --eval "(setq indent-tabs-mode nil)"
 ORG_EVAL += --eval "(setq org-src-preserve-indentation nil)"
 ORG_EVAL += --funcall org-texinfo-export-to-texinfo
@@ -60,15 +59,16 @@ html-dir: $(PKG).texi
 	@printf "Generating $@\n"
 	@texi2pdf --clean $< > /dev/null
 
-DOMAIN         ?= magit.vc
+.PHONY: stats
+stats:
+	@printf "Generating statistics\n"
+	@gitstats $(GITSTATS_ARGS) $(TOP) $(GITSTATS_DIR)
+
 PUBLISH_PATH   ?= /manual/
 RELEASE_PATH   ?= /manual/$(VERSION)/
-
 S3_BUCKET      ?= s3://$(DOMAIN)
 PUBLISH_TARGET  = $(S3_BUCKET)$(PUBLISH_PATH)
 RELEASE_TARGET  = $(S3_BUCKET)$(RELEASE_PATH)
-
-CFRONT_DIST    ?= E2LUHBKU1FBV02
 CFRONT_PATHS    = $(PKG).html $(PKG).pdf $(PKG)/*
 
 comma := ,
@@ -96,4 +96,5 @@ release: html html-dir pdf
 CLEAN = $(PKG).info dir $(PKG) $(PKG).html $(PKG).pdf
 
 clean:
+	@printf "Cleaning docs/*...\n"
 	@rm -rf $(CLEAN)
