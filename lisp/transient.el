@@ -61,10 +61,10 @@
 
 (eval-when-compile (require 'subr-x))
 
-(declare-function info 'info)
-(declare-function Man-find-section 'man)
-(declare-function Man-next-section 'man)
-(declare-function Man-getpage-in-background 'man)
+(declare-function info "info" (&optional file-or-node buffer))
+(declare-function Man-find-section "man" (section))
+(declare-function Man-next-section "man" (n))
+(declare-function Man-getpage-in-background "man" (topic))
 
 (defvar display-line-numbers) ; since Emacs 26.1
 (defvar Man-notify-method)
@@ -259,7 +259,7 @@ arguments.  When this option is non-nil, then the key binding
 for infix argument are highlighted when only a long argument
 \(e.g. \"--verbose\") is specified but no shor-thand (e.g \"-v\").
 In the rare case that a short-hand is specified but does not
-match the key binding, then it is highlighed differently.
+match the key binding, then it is highlighted differently.
 
 The highlighting is done using using `transient-mismatched-key'
 and `transient-nonstandard-key'."
@@ -1340,7 +1340,7 @@ This is an object representing that transient, use
 (defvar transient-current-command nil
   "The transient from which this suffix command was invoked.
 This is a symbol representing that transient, use
-`current-transient-object' to get the respective object.")
+`transient-current-prefix' to get the respective object.")
 
 (defvar transient-current-suffixes nil
   "The suffixes of the transient from which this suffix command was invoked.
@@ -1704,6 +1704,9 @@ of the corresponding object.")
                      (string-trim key)
                      cmd conflict)))
           (define-key map kbd cmd))))
+    (when-let ((b (lookup-key map "-"))) (define-key map [kp-subtract] b))
+    (when-let ((b (lookup-key map "="))) (define-key map [kp-equal] b))
+    (when-let ((b (lookup-key map "+"))) (define-key map [kp-add] b))
     (when transient-enable-popup-navigation
       ;; `transient--make-redisplay-map' maps only over bindings that are
       ;; directly in the base keymap, so that cannot be a composed keymap.
@@ -1772,7 +1775,10 @@ of the corresponding object.")
          (define-key topmap (vconcat transient--redisplay-key (list key))
            #'transient-update)))
      (if transient--redisplay-key
-         (lookup-key transient--transient-map (vconcat transient--redisplay-key))
+         (let ((key (vconcat transient--redisplay-key)))
+           (or (lookup-key transient--transient-map key)
+               (and-let* ((regular (lookup-key local-function-key-map key)))
+                 (lookup-key transient--transient-map (vconcat regular)))))
        transient--transient-map))
     topmap))
 
@@ -2105,8 +2111,13 @@ value.  Otherwise return CHILDREN as is."
 
 (defun transient--suspend-override (&optional nohide)
   (transient--debug 'suspend-override)
-  (when (and (not nohide) transient-hide-during-minibuffer-read)
-    (transient--delete-window))
+  (transient--timer-cancel)
+  (cond ((and (not nohide) transient-hide-during-minibuffer-read)
+         (transient--delete-window))
+        ((and transient--prefix transient--redisplay-key)
+         (setq transient--redisplay-key nil)
+         (when transient--showp
+           (transient--show))))
   (transient--pop-keymap 'transient--transient-map)
   (transient--pop-keymap 'transient--redisplay-map)
   (remove-hook 'pre-command-hook  #'transient--pre-command)
@@ -2164,8 +2175,13 @@ value.  Otherwise return CHILDREN as is."
     (unless abort-only
       (setq post-command
             (lambda () "@transient--delay-post-command"
-              (let ((act (and (eq this-command command)
-                              (not (eq (this-command-keys-vector) [])))))
+              (let ((act (and (not (eq (this-command-keys-vector) []))
+                              (or (eq this-command command)
+                                  ;; `execute-extended-command' was
+                                  ;; used to call another command
+                                  ;; that also uses the minibuffer.
+                                  (equal (this-command-keys)
+                                         (format "\M-x%s\r" this-command))))))
                 (transient--debug 'post-command-hook "act: %s" act)
                 (when act
                   (remove-hook 'transient--post-command-hook post-command)
@@ -3432,7 +3448,12 @@ Optional support for popup buttons is also implemented here."
         (let ((len (length transient--redisplay-key))
               (seq (cl-coerce (edmacro-parse-keys key t) 'list)))
           (cond
-           ((equal (seq-take seq len) transient--redisplay-key)
+           ((member (seq-take seq len)
+                    (list transient--redisplay-key
+                          (thread-last transient--redisplay-key
+                            (cl-substitute ?- 'kp-subtract)
+                            (cl-substitute ?= 'kp-equal)
+                            (cl-substitute ?+ 'kp-add))))
             (let ((pre (key-description (vconcat (seq-take seq len))))
                   (suf (key-description (vconcat (seq-drop seq len)))))
               (setq pre (string-replace "RET" "C-m" pre))
