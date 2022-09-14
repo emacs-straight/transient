@@ -1,52 +1,35 @@
--include config.mk
-include default.mk
+-include ../config.mk
+include ../default.mk
 
-.PHONY: lisp docs
+lisp: $(ELCS) loaddefs check-declare
 
-all: lisp docs
+loaddefs: $(PKG)-autoloads.el
 
-help:
-	$(info make all          - generate lisp and manual)
-	$(info make lisp         - generate byte-code and autoloads)
-	$(info make docs         - generate most manual formats)
-	$(info make texi         - generate texi manual (see comments))
-	$(info make info         - generate info manual)
-	$(info make html         - generate html manual file)
-	$(info make html-dir     - generate html manual directory)
-	$(info make pdf          - generate pdf manual)
-	$(info make publish      - publish snapshot manuals)
-	$(info make release      - publish release manuals)
-	$(info make stats        - generate statistics)
-	$(info make stats-upload - publish statistics)
-	$(info make clean        - remove most generated files)
-	@printf "\n"
+%.elc: %.el
+	@printf "Compiling $<\n"
+	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) -f batch-byte-compile $<
 
-lisp:
-	@$(MAKE) -C lisp lisp
+check-declare:
+	@printf " Checking function declarations\n"
+	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) \
+	--eval "(check-declare-directory default-directory)"
 
-docs:
-	@$(MAKE) -C docs docs
-texi:
-	@$(MAKE) -C docs texi
-info:
-	@$(MAKE) -C docs info
-html:
-	@$(MAKE) -C docs html
-html-dir:
-	@$(MAKE) -C docs html-dir
-pdf:
-	@$(MAKE) -C docs pdf
-
-publish:
-	@$(MAKE) -C docs publish
-release:
-	@$(MAKE) VERSION=$(VERSION) -C docs release
-
-stats:
-	@$(MAKE) -C docs stats
-stats-upload:
-	@$(MAKE) -C docs stats-upload
+CLEAN = $(ELCS) $(PKG)-autoloads.el
 
 clean:
-	@$(MAKE) -C lisp clean
-	@$(MAKE) -C docs clean
+	@printf " Cleaning lisp/*...\n"
+	@rm -rf $(CLEAN)
+
+$(PKG)-autoloads.el: $(ELS)
+	@printf " Creating $@\n"
+	@$(EMACS) -Q --batch -l autoload -l cl-lib --eval "\
+(let ((file (expand-file-name \"$@\"))\
+      (autoload-timestamps nil) \
+      (backup-inhibited t)\
+      (version-control 'never)\
+      (coding-system-for-write 'utf-8-emacs-unix))\
+  (write-region (autoload-rubric file \"package\" nil) nil file nil 'silent)\
+  (cl-letf (((symbol-function 'progress-reporter-do-update) (lambda (&rest _)))\
+            ((symbol-function 'progress-reporter-done) (lambda (_))))\
+    (let ((generated-autoload-file file))\
+      (update-directory-autoloads default-directory))))"
