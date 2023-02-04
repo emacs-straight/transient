@@ -1,6 +1,6 @@
 ;;; transient.el --- Transient commands  -*- lexical-binding:t -*-
 
-;; Copyright (C) 2018-2022 Free Software Foundation, Inc.
+;; Copyright (C) 2018-2023 Free Software Foundation, Inc.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/magit/transient
@@ -799,8 +799,8 @@ They become the value of this argument.")
 (defclass transient-columns (transient-group) ()
   "Group class that displays elements organized in columns.
 Direct elements have to be groups whose elements have to be
-commands or string.  Each subgroup represents a column.  This
-class takes care of inserting the subgroups' elements.")
+commands or strings.  Each subgroup represents a column.
+This class takes care of inserting the subgroups' elements.")
 
 (defclass transient-subgroups (transient-group) ()
   "Group class that wraps other groups.
@@ -860,7 +860,7 @@ to the setup function:
            (indent defun)
            (doc-string 3))
   (pcase-let ((`(,class ,slots ,suffixes ,docstr ,body)
-               (transient--expand-define-args args)))
+               (transient--expand-define-args args arglist)))
     `(progn
        (defalias ',name
          ,(if body
@@ -913,7 +913,7 @@ ARGLIST.  The infix arguments are usually accessed by using
            (indent defun)
            (doc-string 3))
   (pcase-let ((`(,class ,slots ,_ ,docstr ,body)
-               (transient--expand-define-args args)))
+               (transient--expand-define-args args arglist)))
     `(progn
        (defalias ',name (lambda ,arglist ,@body))
        (put ',name 'interactive-only t)
@@ -921,7 +921,7 @@ ARGLIST.  The infix arguments are usually accessed by using
        (put ',name 'transient--suffix
             (,(or class 'transient-suffix) :command ',name ,@slots)))))
 
-(defmacro transient-define-infix (name _arglist &rest args)
+(defmacro transient-define-infix (name arglist &rest args)
   "Define NAME as a transient infix command.
 
 ARGLIST is always ignored and reserved for future use.
@@ -962,7 +962,7 @@ keyword.
            (indent defun)
            (doc-string 3))
   (pcase-let ((`(,class ,slots ,_ ,docstr ,_)
-               (transient--expand-define-args args)))
+               (transient--expand-define-args args arglist)))
     `(progn
        (defalias ',name ,(transient--default-infix-command))
        (put ',name 'interactive-only t)
@@ -980,7 +980,9 @@ example, sets a variable use `transient-define-infix' instead.
 
 \(fn NAME ARGLIST [DOCSTRING] [KEYWORD VALUE]...)")
 
-(defun transient--expand-define-args (args)
+(defun transient--expand-define-args (args &optional arglist)
+  (unless (listp arglist)
+    (error "Mandatory ARGLIST is missing"))
   (let (class keys suffixes docstr)
     (when (stringp (car args))
       (setq docstr (pop args)))
@@ -1150,7 +1152,7 @@ example, sets a variable use `transient-define-infix' instead.
 PREFIX is a prefix command, a symbol.
 SUFFIX is a suffix command or a group specification (of
   the same forms as expected by `transient-define-prefix').
-Intended for use in PREFIX's `:setup-children' function."
+Intended for use in a group's `:setup-children' function."
   (eval (car (transient--parse-child prefix suffix))))
 
 (defun transient-parse-suffixes (prefix suffixes)
@@ -1158,7 +1160,7 @@ Intended for use in PREFIX's `:setup-children' function."
 PREFIX is a prefix command, a symbol.
 SUFFIXES is a list of suffix command or a group specification
   (of the same forms as expected by `transient-define-prefix').
-Intended for use in PREFIX's `:setup-children' function."
+Intended for use in a group's `:setup-children' function."
   (mapcar (apply-partially #'transient-parse-suffix prefix) suffixes))
 
 ;;; Edit
@@ -1469,14 +1471,25 @@ probably use this instead:
     (cl-check-type command command))
   (if (or transient--prefix
           transient-current-prefix)
-      (cl-find-if (lambda (obj)
-                    (eq (transient--suffix-command obj)
-                        ;; When `this-command' is `transient-set-level',
-                        ;; its reader needs to know what command is being
-                        ;; configured.
-                        (or command this-original-command)))
-                  (or transient--suffixes
-                      transient-current-suffixes))
+      (let ((suffixes
+             (cl-remove-if-not
+              (lambda (obj)
+                (eq (transient--suffix-command obj)
+                    (or command
+                        (if (eq this-command 'transient-set-level)
+                            ;; This is how it can look up for which
+                            ;; command it is setting the level.
+                            this-original-command
+                          this-command))))
+              (or transient--suffixes
+                  transient-current-suffixes))))
+        (or (and (cdr suffixes)
+                 (cl-find-if
+                  (lambda (obj)
+                    (equal (listify-key-sequence (transient--kbd (oref obj key)))
+                           (listify-key-sequence (this-command-keys))))
+                  suffixes))
+            (car suffixes)))
     (when-let* ((obj (get (or command this-command) 'transient--suffix))
                 (obj (clone obj)))
       ;; Cannot use and-let* because of debbugs#31840.
@@ -2199,11 +2212,11 @@ value.  Otherwise return CHILDREN as is."
         (delayed (if transient--exitp
                      (apply-partially #'transient--post-exit this-command)
                    #'transient--resume-override))
-        outside-interactive post-command abort-minibuffer)
+        post-command abort-minibuffer)
     (unless abort-only
       (setq post-command
             (lambda () "@transient--delay-post-command"
-              (let ((act (and (not (eq (this-command-keys-vector) []))
+              (let ((act (and (not (equal (this-command-keys-vector) []))
                               (or (eq this-command command)
                                   ;; `execute-extended-command' was
                                   ;; used to call another command
@@ -2211,9 +2224,7 @@ value.  Otherwise return CHILDREN as is."
                                   (equal
                                    (ignore-errors
                                      (string-to-multibyte (this-command-keys)))
-                                   (format "\M-x%s\r" this-command))
-                                  ;; Minibuffer used outside `interactive'.
-                                  (and outside-interactive 'post-cmd)))))
+                                   (format "\M-x%s\r" this-command))))))
                 (transient--debug 'post-command-hook "act: %s" act)
                 (when act
                   (remove-hook 'transient--post-command-hook post-command)
@@ -2222,15 +2233,12 @@ value.  Otherwise return CHILDREN as is."
       (add-hook 'transient--post-command-hook post-command))
     (setq abort-minibuffer
           (lambda () "@transient--delay-post-command"
-            (let ((act (and (= (minibuffer-depth) depth)
-                            (or (memq this-command transient--abort-commands)
-                                (equal (this-command-keys) "")
-                                (prog1 nil
-                                  (setq outside-interactive t))))))
+            (let ((act (and (or (memq this-command transient--abort-commands)
+                                (equal (this-command-keys) ""))
+                            (= (minibuffer-depth) depth))))
               (transient--debug
                'abort-minibuffer
-               "mini: %s|%s, act: %s" (minibuffer-depth) depth
-               (or act (and outside-interactive '->post-cmd)))
+               "mini: %s|%s, act %s" (minibuffer-depth) depth act)
               (when act
                 (remove-hook 'transient--post-command-hook post-command)
                 (remove-hook 'minibuffer-exit-hook abort-minibuffer)
@@ -2241,7 +2249,7 @@ value.  Otherwise return CHILDREN as is."
   (transient--debug 'post-command)
   (transient--with-emergency-exit
     (cond
-     ((and (eq (this-command-keys-vector) [])
+     ((and (equal (this-command-keys-vector) [])
            (= (minibuffer-depth)
               (1+ transient--minibuffer-depth)))
       (transient--suspend-override)
@@ -4093,7 +4101,8 @@ we stop there."
                 (regexp-opt (list "transient-define-prefix"
                                   "transient-define-infix"
                                   "transient-define-argument"
-                                  "transient-define-suffix")
+                                  "transient-define-suffix"
+                                  "transient-define-groups")
                             t)
                 "\\_>[ \t'(]*"
                 "\\(\\(?:\\sw\\|\\s_\\)+\\)?")
