@@ -877,18 +877,6 @@ to the setup function:
             (list ,@(cl-mapcan (lambda (s) (transient--parse-child name s))
                                suffixes))))))
 
-(defmacro transient-define-groups (name &rest groups)
-  "Define one or more GROUPS and store them in symbol NAME.
-GROUPS, defined using this macro, can be used inside the
-definition of transient prefix commands, by using the symbol
-NAME where a group vector is expected.  GROUPS has the same
-form as for `transient-define-prefix'."
-  (declare (debug (&define name [&rest vectorp]))
-           (indent defun))
-  `(put ',name 'transient--layout
-        (list ,@(cl-mapcan (lambda (group) (transient--parse-child name group))
-                           groups))))
-
 (defmacro transient-define-suffix (name arglist &rest args)
   "Define NAME as a transient suffix command.
 
@@ -1648,6 +1636,7 @@ See `transient-enable-popup-navigation'.")
     (define-key map [universal-argument]      #'transient--do-stay)
     (define-key map [negative-argument]       #'transient--do-minus)
     (define-key map [digit-argument]          #'transient--do-stay)
+    (define-key map [top-level]               #'transient--do-quit-all)
     (define-key map [transient-quit-all]      #'transient--do-quit-all)
     (define-key map [transient-quit-one]      #'transient--do-quit-one)
     (define-key map [transient-quit-seq]      #'transient--do-stay)
@@ -2033,6 +2022,7 @@ value.  Otherwise return CHILDREN as is."
   (transient--push-keymap 'transient--redisplay-map)
   (add-hook 'pre-command-hook  #'transient--pre-command)
   (add-hook 'post-command-hook #'transient--post-command)
+  (advice-add 'recursive-edit :around #'transient--recursive-edit)
   (when transient--exitp
     ;; This prefix command was invoked as the suffix of another.
     ;; Prevent `transient--post-command' from removing the hooks
@@ -2166,6 +2156,19 @@ value.  Otherwise return CHILDREN as is."
   (add-hook 'pre-command-hook  #'transient--pre-command)
   (add-hook 'post-command-hook #'transient--post-command))
 
+(defun transient--recursive-edit (fn)
+  (transient--debug 'recursive-edit)
+  (if (not transient--prefix)
+      (funcall fn)
+    (transient--suspend-override (bound-and-true-p edebug-active))
+    (funcall fn) ; Already unwind protected.
+    (cond ((memq this-command '(top-level abort-recursive-edit))
+           (setq transient--exitp t)
+           (transient--post-exit)
+           (transient--delete-window))
+          (transient--prefix
+           (transient--resume-override)))))
+
 (defmacro transient--with-suspended-override (&rest body)
   (let ((depth (make-symbol "depth"))
         (setup (make-symbol "setup"))
@@ -2276,7 +2279,8 @@ value.  Otherwise return CHILDREN as is."
                          (setq transient--exitp nil)
                        (transient--stack-zap)))))
     (remove-hook 'pre-command-hook  #'transient--pre-command)
-    (remove-hook 'post-command-hook #'transient--post-command))
+    (remove-hook 'post-command-hook #'transient--post-command)
+    (advice-remove 'recursive-edit #'transient--recursive-edit))
   (setq transient-current-prefix nil)
   (setq transient-current-command nil)
   (setq transient-current-suffixes nil)
@@ -3980,23 +3984,6 @@ search instead."
       ('(transient-blue transient-blue) 'transient-blue))))
 
 ;;;; Edebug
-
-(defun transient--edebug--recursive-edit (fn arg-mode)
-  (transient--debug 'edebug--recursive-edit)
-  (if (not transient--prefix)
-      (funcall fn arg-mode)
-    (transient--suspend-override t)
-    (funcall fn arg-mode)
-    (transient--resume-override)))
-
-(advice-add 'edebug--recursive-edit :around #'transient--edebug--recursive-edit)
-
-(defun transient--abort-edebug ()
-  (when (bound-and-true-p edebug-active)
-    (transient--emergency-exit)))
-
-(advice-add 'abort-recursive-edit :before #'transient--abort-edebug)
-(advice-add 'top-level :before #'transient--abort-edebug)
 
 (defun transient--edebug-command-p ()
   (and (bound-and-true-p edebug-active)
