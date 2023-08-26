@@ -7,7 +7,7 @@
 #+texinfo_dir_category: Emacs misc features
 #+texinfo_dir_title: Transient: (transient).
 #+texinfo_dir_desc: Transient Commands
-#+subtitle: for version 0.4.1
+#+subtitle: for version 0.4.3
 
 #+setupfile: .orgconfig
 
@@ -40,7 +40,7 @@ https://github.com/positron-solutions/transient-showcase.
 #+end_quote
 
 #+texinfo: @noindent
-This manual is for Transient version 0.4.1.
+This manual is for Transient version 0.4.3.
 
 #+texinfo: @insertcopying
 :END:
@@ -151,7 +151,7 @@ arguments”), but also remembers the values of individual arguments
 independently.  See [[*Using History]].
 
 After a transient prefix command is invoked, {{{kbdvar(C-h <KEY>)}}} can be used to
-show the documentation for the infix or suffix command that {{{var(KEY)}}} is
+show the documentation for the infix or suffix command that {{{kbdvar(<KEY>)}}} is
 bound to (see [[*Getting Help for Suffix Commands]]), and infixes and
 suffixes can be removed from the transient using {{{kbdvar(C-x l <KEY>)}}}. Infixes
 and suffixes that are disabled by default can be enabled the same way.
