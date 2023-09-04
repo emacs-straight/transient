@@ -1622,9 +1622,9 @@ of the corresponding object."
   "<transient-show>"              #'transient--do-stay
   "<transient-update>"            #'transient--do-stay
   "<transient-toggle-common>"     #'transient--do-stay
-  "<transient-set>"               #'transient--do-call
-  "<transient-save>"              #'transient--do-call
-  "<transient-reset>"             #'transient--do-call
+  "<transient-set>"               #'transient--do-stay
+  "<transient-save>"              #'transient--do-stay
+  "<transient-reset>"             #'transient--do-stay
   "<describe-key-briefly>"        #'transient--do-stay
   "<describe-key>"                #'transient--do-stay
   "<transient-scroll-up>"         #'transient--do-stay
@@ -2242,7 +2242,19 @@ value.  Otherwise return CHILDREN as is."
     (transient--debug 'post-command)
     (transient--with-emergency-exit
       (cond (transient--exitp (transient--post-exit))
-            ((eq this-command (oref transient--prefix command)))
+            ;; If `this-command' is the current transient prefix, then we
+            ;; have already taken care of updating the transient buffer...
+            ((and (eq this-command (oref transient--prefix command))
+                  ;; ... but if `prefix-arg' is non-nil, then the values
+                  ;; of `this-command' and `real-this-command' are untrue
+                  ;; because `prefix-command-preserve-state' changes them.
+                  ;; We cannot use `current-prefix-arg' because it is set
+                  ;; too late (in `command-execute'), and if it were set
+                  ;; earlier, then we likely still would not be able to
+                  ;; rely on it and `prefix-command-preserve-state-hook'
+                  ;; would have to be used record that a universal
+                  ;; argument is in effect.
+                  (not prefix-arg)))
             ((let ((old transient--redisplay-map)
                    (new (transient--make-redisplay-map)))
                (unless (equal old new)
