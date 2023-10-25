@@ -1612,6 +1612,23 @@ object should not affect later invocations.
 - Classes used for infix commands that represent variables should
   derived from the abstract ~transient-variable~ class.
 
+- The ~transient-information~ class is special in that suffixes that use
+  this class are not associated with a command and thus also not with
+  any key binding.  Such suffixes are only used to display arbitrary
+  information, and that anywhere a suffix can appear.  Display-only
+  suffix specifications take this form:
+
+  #+begin_src emacs-lisp
+    ([LEVEL] :info DESCRIPTION [KEYWORD VALUE]...)
+  #+end_src
+
+  The ~:info~ keyword argument replaces the ~:description~ keyword used for
+  other suffix classes.  Other keyword arguments that you might want to
+  set, include ~:face~, predicate keywords (such as ~:if~), and ~:format~.
+  By default the value of ~:format~ includes ~%k~, which for this class is
+  replaced with the empty string or spaces, if keys are being padded in
+  the containing group.
+
 Magit defines additional classes, which can serve as examples for the
 fancy things you can do without modifying Transient.  Some of these
 classes will likely get generalized and added to Transient.  For now
@@ -1746,6 +1763,13 @@ functions use ~describe-function~.
   remains active/transient when a suffix or arbitrary non-suffix
   command is invoked.  See [[*Transient State]].
 
+- ~refresh-suffixes~ Normally suffix objects and keymaps are only setup
+  once, when the prefix is invoked.  Setting this to ~t~, causes them to
+  be recreated after every command.  This is useful when using ~:if...~
+  predicates, and those need to be rerun for some reason.  Doing this
+  is somewhat costly, and there is a risk of losing state, so this is
+  disabled by default and still considered experimental.
+
 - ~incompatible~ A list of lists.  Each sub-list specifies a set of
   mutually exclusive arguments.  Enabling one of these arguments
   causes the others to be disabled.  An argument may appear in
@@ -1811,6 +1835,10 @@ Also see [[*Suffix Classes]].
 
 - ~description~ The description, either a string or a function that is
   called with no argument and returns a string.
+
+- ~face~ Face used for the description.  In simple cases it is easier
+  to use this instead of using a function as ~description~ and adding
+  the styling there.  ~face~ is appended using ~add-face-text-property~.
 
 - ~show-help~ A function used to display help for the suffix.  If
   unspecified, the prefix controls how help is displayed for its
@@ -1918,6 +1946,10 @@ what happens if you use more than one.
 - ~if-not-mode~ Enable if major-mode does not match value.
 - ~if-derived~ Enable if major-mode derives from value.
 - ~if-not-derived~ Enable if major-mode does not derive from value.
+
+By default these predicates run when the prefix command is invoked,
+but this can be changes, using the ~refresh-suffixes~ prefix slot.
+See [[*Prefix Slots]].
 
 One more slot is shared between group and suffix classes, ~level~.  Like
 the slots documented above, it is a predicate, but it is used for a
