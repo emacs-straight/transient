@@ -1222,10 +1222,10 @@ the object's values just for the binding inside this transient.
 
 @item
 @var{DESCRIPTION} is the description, either a string or a function that
-returns a string.  The function should be a lambda expression to
-avoid ambiguity.  In some cases a symbol that is bound as a function
-would also work but to be safe you should use @code{:description} in that
-case.
+takes zero or one arguments (the suffix object) and returns a string.
+The function should be a lambda expression to avoid ambiguity.  In
+some cases a symbol that is bound as a function would also work but
+to be safe you should use @code{:description} in that case.
 @end itemize
 
 The next element is either a command or an argument.  This is the only
@@ -2096,8 +2096,9 @@ It must contain the following %-placeholders:
 @end itemize
 
 @item
-@code{description} The description, either a string or a function that is
-called with no argument and returns a string.
+@code{description} The description, either a string or a function, which is
+called with zero or one argument (the suffix object), and returns a
+string.
 
 @item
 @code{face} Face used for the description.  In simple cases it is easier
@@ -2191,8 +2192,10 @@ function that takes the object as the only argument and which
 returns a prompt string.
 
 @item
-@code{choices} A list of valid values.  How exactly that is used depends on
-the class of the object.
+@code{choices} A list of valid values, or a function that returns such a
+list.  The latter is not implemented for @code{transient-switches}, because
+I couldn't think of a use-case.  How exactly the choices are used
+varies depending on the class of the suffix.
 @end itemize
 
 @anchor{Slots of @code{transient-variable}}
