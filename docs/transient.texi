@@ -213,7 +213,7 @@ looks a bit like this:
 This is a simplified version of @code{magit-tag}.  Info manuals do not
 support images or colored text, so the above ``screenshot'' lacks some
 information; in practice you would be able to tell whether the
-arguments @code{--force} and @code{--annotate} are enabled or not based on their
+arguments @code{--force} and @code{--annotate} are enabled or not, based on their
 color.
 
 @end quotation
@@ -221,11 +221,11 @@ color.
 @cindex command dispatchers
 Transient can be used to implement simple ``command dispatchers''.  The
 main benefit then is that the user can see all the available commands
-in a popup buffer.  That is useful by itself because it frees the user
-from having to remember all the keys that are valid after a certain
-prefix key or command.  Magit's @code{magit-dispatch} (on @kbd{C-x M-g}) command is
-an example of using Transient to merely implement a command
-dispatcher.
+in a popup buffer, which can be thought of as a ``menus''.  That is
+useful by itself because it frees the user from having to remember all
+the keys that are valid after a certain prefix key or command.
+Magit's @code{magit-dispatch} (on @kbd{C-x M-g}) command is an example of using
+Transient to merely implement a command dispatcher.
 
 In addition to that, Transient also allows users to interactively pass
 arguments to commands.  These arguments can be much more complex than
@@ -348,7 +348,7 @@ it returns to the previous transient, if any.
 
 Transient's predecessor bound @kbd{q} instead of @kbd{C-g} to the quit command.
 To learn how to get that binding back see @code{transient-bind-q-to-quit}'s
-doc string.
+documentation string.
 
 @table @asis
 @item @kbd{C-q} (@code{transient-quit-all})
@@ -544,8 +544,8 @@ What sort of documentation is shown depends on how the transient was
 defined.  For infix commands that represent command-line arguments
 this ideally shows the appropriate manpage.  @code{transient-help} then tries
 to jump to the correct location within that.  Info manuals are also
-supported.  The fallback is to show the command's doc string, for
-non-infix suffixes this is usually appropriate.
+supported.  The fallback is to show the command's documentation
+string, for non-infix suffixes this is usually appropriate.
 
 @node Enabling and Disabling Suffixes
 @section Enabling and Disabling Suffixes
@@ -770,26 +770,28 @@ If @code{nil}, then the buffer has no mode-line.  If the buffer is not
 displayed right above the echo area, then this probably is not a
 good value.
 
-If @code{line} (the default), then the buffer also has no mode-line, but a
-thin line is drawn instead, using the background color of the face
-@code{transient-separator}.  Text-mode frames cannot display thin lines,
-and therefore fall back to treating @code{line} like @code{nil}.
+If @code{line} (the default), then the buffer also has no mode-line,
+but a thin line is drawn instead.  On termcap frames that is is
+not possible, so there @code{line} is treated as a synonym for @code{nil}.
+
+The color of the line is used to indicate if non-suffixes are
+allowed and whether they exit the transient.  The foreground
+color of @code{transient-key-noop} (if non-suffix are disallowed),
+@code{transient-key-stay} (if allowed and transient stays active), or
+@code{transient-key-exit} (if allowed and they exit the transient) is
+used to draw the line.
 
 Otherwise this can be any mode-line format.  See @ref{Mode Line Format,,,elisp,}, for details.
 @end defopt
 
 @defopt transient-semantic-coloring
-This option controls whether prefixes and suffixes are colored in
-a Hydra-like fashion.
+This option controls whether colors are used to indicate the
+transient behavior of commands.
 
 If non-@code{nil}, then the key binding of each suffix is colorized to
 indicate whether it exits the transient state or not.  The color of
 the prefix is indicated using the line that is drawn when the value
 of @code{transient-mode-line-format} is @code{line}.
-
-For more information about how Hydra uses colors see
-@uref{https://github.com/abo-abo/hydra#color} and
-@uref{https://oremacs.com/2015/02/19/hydra-colors-reloaded}.
 @end defopt
 
 @defopt transient-highlight-mismatched-keys
@@ -1449,7 +1451,7 @@ warning.  This does not ``deactivate'' the transient.
 
 The behavior can be changed for all suffixes of a particular prefix
 and/or for individual suffixes.  The values should nearly always be
-booleans, but certain functions, called “pre-commands”, can also be
+booleans, but certain functions, called ``pre-commands'', can also be
 used.  These functions are named @code{transient--do-VERB}, and the symbol
 @code{VERB} can be used as a shorthand.
 
@@ -1458,7 +1460,7 @@ transient stay active, when this command is invoked?"  @code{t} means that
 the transient stays active, while @code{nil} means that invoking the command
 exits the transient.
 
-Note that when the suffix is a “sub-prefix”, invoking that command
+Note that when the suffix is a ``sub-prefix'', invoking that command
 always activates that sub-prefix, causing the outer prefix to no
 longer be active and displayed.  Here @code{t} means that when you exit the
 inner prefix, then the outer prefix becomes active again, while @code{nil}
@@ -1494,7 +1496,7 @@ sub-sections.  They are called by @code{transient--pre-command}, a function
 on @code{pre-command-hook}, and the value that they return determines whether
 the transient is exited.  To do so the value of one of the constants
 @code{transient--exit} or @code{transient--stay} is used (that way we don't have to
-remember if @code{t} means “exit” or “stay”).
+remember if @code{t} means ``exit'' or “stay”).
 
 Additionally, these functions may change the value of @code{this-command}
 (which explains why they have to be called using @code{pre-command-hook}),
@@ -1514,16 +1516,16 @@ the suffix's @code{transient} slot.
 
 @item
 While a sub-prefix is active we nearly always want @kbd{C-g} to take the
-user back to the “super-prefix”, even when the other suffixes don't
+user back to the ``super-prefix'', even when the other suffixes don't
 do that.  However, in rare cases this may not be desirable, and that
 makes the following complication necessary:
 
 For @code{transient-suffix} objects the @code{transient} slot is unbound.  We can
 ignore that for the most part because @code{nil} and the slot being unbound
-are treated as equivalent, and mean “do exit”.  That isn't actually
+are treated as equivalent, and mean ``do exit''.  That isn't actually
 true for suffixes that are sub-prefixes though.  For such suffixes
-unbound means “do exit but allow going back”, which is the default,
-while @code{nil} means “do exit permanently”, which requires that slot to
+unbound means ``do exit but allow going back'', which is the default,
+while @code{nil} means ``do exit permanently'', which requires that slot to
 be explicitly set to that value.
 @end itemize
 
@@ -2003,12 +2005,13 @@ Show help for the prefix, infix or suffix command represented by
 
 For prefixes, show the info manual, if that is specified using the
 @code{info-manual} slot.  Otherwise, show the manpage if that is specified
-using the @code{man-page} slot.  Otherwise, show the command's doc string.
+using the @code{man-page} slot.  Otherwise, show the command's
+documentation string.
 
-For suffixes, show the command's doc string.
+For suffixes, show the command's documentation string.
 
 For infixes, show the manpage if that is specified.  Otherwise show
-the command's doc string.
+the command's documentation string.
 @end defun
 
 @node Prefix Slots
@@ -2053,7 +2056,7 @@ for example, @code{--option=one}.
 
 @item
 @code{scope} For some transients it might be necessary to have a sort of
-secondary value, called a “scope”.  See @code{transient-define-prefix}.
+secondary value, called a ``scope''.  See @code{transient-define-prefix}.
 @end itemize
 
 @anchor{Internal Prefix Slots}
@@ -2297,10 +2300,10 @@ Yes, see @code{transient-display-buffer-action} in @ref{Configuration}.
 @anchor{How can I copy text from the popup buffer?}
 @appendixsec How can I copy text from the popup buffer?
 
-To be able to mark text in any transient popup buffer using the mouse,
-you have to add the following binding.  Note that the region won't be
-visualized, while doing so.  After you have quit the transient popup,
-you will be able to yank it another buffer.
+To be able to mark text in Transient's popup buffer using the mouse,
+you have to add the below binding.  Note that for technical reasons,
+the region won't be visualized, while doing so.  After you have quit
+the transient popup, you will be able to yank it in another buffer.
 
 @lisp
 (keymap-set transient-predicate-map
@@ -2380,7 +2383,7 @@ for @kbd{q}.
 If you want to get @kbd{q}'s old binding back then you can do so.  Doing
 that is a bit more complicated than changing a single key binding, so
 I have implemented a function, @code{transient-bind-q-to-quit} that makes the
-necessary changes.  See its doc string for more information.
+necessary changes.  See its documentation string for more information.
 
 @node Keystroke Index
 @appendix Keystroke Index
