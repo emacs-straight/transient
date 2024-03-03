@@ -1024,15 +1024,21 @@ example, sets a variable, use `transient-define-infix' instead.
 
 (defun transient--default-infix-command ()
   ;; Most infix commands are but an alias for this command.
-  "Cannot show any documentation for this anonymous infix command.
+  "Cannot show any documentation for this transient infix command.
 
-This infix command was defined anonymously, i.e., it was define
-inside a call to `transient-define-prefix'.
+When you request help for an infix command using `transient-help', that
+usually shows the respective man-page and tries to jump to the location
+where the respective argument is being described.
 
-When you request help for such an infix command, then we usually
-show the respective man-page and jump to the location where the
-respective argument is being described.  This isn't possible in
-this case, because the `man-page' slot was not set in this case."
+If no man-page is specified for the containing transient menu, then the
+docstring is displayed instead, if any.
+
+If the infix command doesn't have a docstring, as is the case here, then
+this docstring is displayed instead, because technically infix commands
+are aliases for `transient--default-infix-command'.
+
+`describe-function' also shows the docstring of the infix command,
+falling back to that of the same aliased command."
   (interactive)
   (let ((obj (transient-suffix-object)))
     (transient-infix-set obj (transient-infix-read obj)))
@@ -1040,6 +1046,17 @@ this case, because the `man-page' slot was not set in this case."
 (put 'transient--default-infix-command 'interactive-only t)
 (put 'transient--default-infix-command 'completion-predicate
      #'transient--suffix-only)
+
+(defun transient--find-function-advised-original (fn func)
+  "Return nil instead of `transient--default-infix-command'.
+When using `find-function' to jump to the definition of a transient
+infix command/argument, then we want to actually jump to that, not to
+the definition of `transient--default-infix-command', which all infix
+commands are aliases for."
+  (let ((val (funcall fn func)))
+    (and val (not (eq val 'transient--default-infix-command)) val)))
+(advice-add 'find-function-advised-original :around
+            #'transient--find-function-advised-original)
 
 (eval-and-compile
   (defun transient--expand-define-args (args &optional arglist)
@@ -1068,7 +1085,8 @@ this case, because the `man-page' slot was not set in this case."
             args))))
 
 (defun transient--parse-child (prefix spec)
-  (cl-etypecase spec
+  (cl-typecase spec
+    (null    (error "Invalid transient--parse-child spec: %s" spec))
     (symbol  (let ((value (symbol-value spec)))
                (if (and (listp value)
                         (or (listp (car value))
@@ -1077,7 +1095,8 @@ this case, because the `man-page' slot was not set in this case."
                  (transient--parse-child prefix value))))
     (vector  (and-let* ((c (transient--parse-group  prefix spec))) (list c)))
     (list    (and-let* ((c (transient--parse-suffix prefix spec))) (list c)))
-    (string  (list spec))))
+    (string  (list spec))
+    (t       (error "Invalid transient--parse-child spec: %s" spec))))
 
 (defun transient--parse-group (prefix spec)
   (setq spec (append spec nil))
@@ -1098,11 +1117,14 @@ this case, because the `man-page' slot was not set in this case."
                      (and (listp val) (not (eq (car val) 'lambda))))
                  (setq args (plist-put args key (macroexp-quote val))))
                 ((setq args (plist-put args key val))))))
+      (unless (or spec class (not (plist-get args :setup-children)))
+        (message "WARNING: %s: When %s is used, %s must also be specified"
+                 'transient-define-prefix :setup-children :class))
       (list 'vector
             (or level transient--default-child-level)
             (cond (class)
                   ((or (vectorp car)
-                       (symbolp car))
+                       (and car (symbolp car)))
                    (quote 'transient-columns))
                   ((quote 'transient-column)))
             (and args (cons 'list args))
@@ -1238,6 +1260,7 @@ PREFIX is a prefix command, a symbol.
 SUFFIX is a suffix command or a group specification (of
   the same forms as expected by `transient-define-prefix').
 Intended for use in a group's `:setup-children' function."
+  (cl-assert (and prefix (symbolp prefix)))
   (eval (car (transient--parse-child prefix suffix))))
 
 (defun transient-parse-suffixes (prefix suffixes)
@@ -1246,6 +1269,7 @@ PREFIX is a prefix command, a symbol.
 SUFFIXES is a list of suffix command or a group specification
   (of the same forms as expected by `transient-define-prefix').
 Intended for use in a group's `:setup-children' function."
+  (cl-assert (and prefix (symbolp prefix)))
   (mapcar (apply-partially #'transient-parse-suffix prefix) suffixes))
 
 ;;; Edit
@@ -3566,7 +3590,7 @@ have a history of their own.")
                              (button-get (1- (point)) 'command))
                         (transient--heading-at-point))))
       (erase-buffer)
-      (setq window-size-fixed t)
+      (setq window-size-fixed 'height)
       (when (bound-and-true-p tab-line-format)
         (setq tab-line-format nil))
       (setq header-line-format nil)
