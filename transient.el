@@ -1482,6 +1482,10 @@ variable instead.")
 (defvar transient-exit-hook nil
   "Hook run after exiting a transient.")
 
+(defvar transient-setup-buffer-hook nil
+  "Hook run when setting up the transient buffer.
+That buffer is current and empty when this hook runs.")
+
 (defvar transient--prefix nil)
 (defvar transient--layout nil)
 (defvar transient--suffixes nil)
@@ -1861,15 +1865,20 @@ of the corresponding object."
           (setq key (save-match-data
                       (funcall transient-substitute-key-function obj)))
           (oset obj key key))
-        (let ((kbd (kbd key))
-              (cmd (oref obj command)))
-          (when-let ((conflict (and transient-detect-key-conflicts
-                                    (transient--lookup-key map kbd))))
-            (unless (eq cmd conflict)
-              (error "Cannot bind %S to %s and also %s"
-                     (string-trim key)
-                     cmd conflict)))
-          (define-key map kbd cmd))))
+        (let* ((kbd (kbd key))
+               (cmd (oref obj command))
+               (alt (transient--lookup-key map kbd)))
+          (cond ((not alt)
+                 (define-key map kbd cmd))
+                ((eq alt cmd))
+                ((transient--inapt-suffix-p obj))
+                ((and-let* ((obj (transient-suffix-object alt)))
+                   (transient--inapt-suffix-p obj))
+                 (define-key map kbd cmd))
+                (transient-detect-key-conflicts
+                 (error "Cannot bind %S to %s and also %s"
+                        (string-trim key) cmd alt))
+                ((define-key map kbd cmd))))))
     (when-let ((b (keymap-lookup map "-"))) (keymap-set map "<kp-subtract>" b))
     (when-let ((b (keymap-lookup map "="))) (keymap-set map "<kp-equal>" b))
     (when-let ((b (keymap-lookup map "+"))) (keymap-set map "<kp-add>" b))
@@ -2067,9 +2076,9 @@ value.  Otherwise return CHILDREN as is."
 
 (defun transient--init-group (levels spec)
   (pcase-let ((`(,level ,class ,args ,children) (append spec nil)))
-    (and-let* ((- (transient--use-level-p level))
+    (and-let* (((transient--use-level-p level))
                (obj (apply class :level level args))
-               (- (transient--use-suffix-p obj))
+               ((transient--use-suffix-p obj))
                (suffixes (cl-mapcan (lambda (c) (transient--init-child levels c))
                                     (transient-setup-children obj children))))
       (progn ; work around debbugs#31840
@@ -3358,7 +3367,7 @@ prompt."
 
 (cl-defmethod transient-infix-set :after ((obj transient-argument) value)
   "Unset incompatible infix arguments."
-  (when-let* ((--- value)
+  (when-let* ((value)
               (val (transient-infix-value obj))
               (arg (if (slot-boundp obj 'argument)
                        (oref obj argument)
@@ -3372,15 +3381,15 @@ prompt."
                        (and (not (equal val arg))
                             (cl-mapcan (apply-partially filter val) spec)))))
     (dolist (obj transient--suffixes)
-      (when-let* ((--- (cl-typep obj 'transient-argument))
+      (when-let* (((cl-typep obj 'transient-argument))
                   (val (transient-infix-value obj))
                   (arg (if (slot-boundp obj 'argument)
                            (oref obj argument)
                          (oref obj argument-format)))
-                  (--- (if (equal val arg)
-                           (member arg incomp)
-                         (or (member val incomp)
-                             (member arg incomp)))))
+                  ((if (equal val arg)
+                       (member arg incomp)
+                     (or (member val incomp)
+                         (member arg incomp)))))
         (transient-infix-set obj nil)))))
 
 (cl-defgeneric transient-set-value (obj)
@@ -3516,6 +3525,10 @@ the option does not appear in ARGS."
           (or (match-string 1 match) "")))
     (and (member arg args) t)))
 
+(defun transient-scope ()
+  "Return the value of the `scope' slot of the current prefix."
+  (oref (transient-prefix-object) scope))
+
 ;;; History
 
 (cl-defgeneric transient--history-key (obj)
@@ -3590,6 +3603,9 @@ have a history of their own.")
                              (button-get (1- (point)) 'command))
                         (transient--heading-at-point))))
       (erase-buffer)
+      (run-hooks 'transient-setup-buffer-hook)
+      (when transient-force-fixed-pitch
+        (transient--force-fixed-pitch))
       (setq window-size-fixed t)
       (when (bound-and-true-p tab-line-format)
         (setq tab-line-format nil))
@@ -3610,9 +3626,7 @@ have a history of their own.")
       (when (or transient--helpp transient--editp)
         (transient--insert-help))
       (when-let ((line (transient--separator-line)))
-        (insert line))
-      (when transient-force-fixed-pitch
-        (transient--force-fixed-pitch)))
+        (insert line)))
     (unless (window-live-p transient--window)
       (setq transient--window
             (display-buffer buf transient-display-buffer-action)))
@@ -3990,8 +4004,8 @@ If the OBJ's `key' is currently unreachable, then apply the face
     str))
 
 (defun transient--get-face (obj slot)
-  (and-let* ((! (slot-exists-p obj slot))
-             (! (slot-boundp   obj slot))
+  (and-let* (((slot-exists-p obj slot))
+             ((slot-boundp obj slot))
              (face (slot-value obj slot)))
     (if (and (not (facep face))
              (functionp face))
