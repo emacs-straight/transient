@@ -1,4 +1,4 @@
-This is docaCFG4h.info, produced by makeinfo version 6.8 from
+This is docYjnvCl.info, produced by makeinfo version 6.8 from
 transient.texi.
 
      Copyright (C) 2018–2024 Free Software Foundation, Inc.
@@ -19,7 +19,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: docaCFG4h.info,  Node: Top,  Next: Introduction,  Up: (dir)
+File: docYjnvCl.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
 Transient User and Developer Manual
 ***********************************
@@ -32,7 +32,7 @@ used to implement similar menus in other packages.
 resource to get over that hurdle is Psionic K’s interactive tutorial,
 available at <https://github.com/positron-solutions/transient-showcase>.
 
-This manual is for Transient version 0.7.4.
+This manual is for Transient version (unknown).
 
      Copyright (C) 2018–2024 Free Software Foundation, Inc.
 
@@ -108,7 +108,7 @@ Suffix Methods
 
 
 
-File: docaCFG4h.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+File: docYjnvCl.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
@@ -181,7 +181,7 @@ you’ve tried it, it’s hard to go back to the ‘C-u what can I do here
 again?’ way.
 
 
-File: docaCFG4h.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
+File: docYjnvCl.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
 
 2 Usage
 *******
@@ -199,7 +199,7 @@ File: docaCFG4h.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev:
 * Configuration::
 
 
-File: docaCFG4h.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
+File: docYjnvCl.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
 
 2.1 Invoking Transients
 =======================
@@ -223,7 +223,7 @@ commands may also set some value by side-effect, e.g., by setting the
 value of some variable.
 
 
-File: docaCFG4h.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
+File: docYjnvCl.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
 
 2.2 Aborting and Resuming Transients
 ====================================
@@ -247,8 +247,9 @@ innermost transient, causing a return to the previous transient.
 use the latter, then you can later resume the stack of transients using
 ‘M-x transient-resume’.
 
-‘C-g’ (‘transient-quit-seq’)
-‘C-g’ (‘transient-quit-one’)
+Key: C-g (transient-quit-seq)
+
+Key: C-g (transient-quit-one)
      This key quits the currently active incomplete key sequence, if
      any, or else the current transient.  When quitting the current
      transient, it returns to the previous transient, if any.
@@ -257,12 +258,12 @@ use the latter, then you can later resume the stack of transients using
 command.  To learn how to get that binding back see
 ‘transient-bind-q-to-quit’’s documentation string.
 
-‘C-q’ (‘transient-quit-all’)
+Key: C-q (transient-quit-all)
      This command quits the currently active incomplete key sequence, if
      any, and all transients, including the active transient and all
      suspended transients, if any.
 
-‘C-z’ (‘transient-suspend’)
+Key: C-z (transient-suspend)
      Like ‘transient-quit-all’, this command quits an incomplete key
      sequence, if any, and all transients.  Additionally, it saves the
      stack of transients so that it can easily be resumed (which is
@@ -274,12 +275,12 @@ command.  To learn how to get that binding back see
      If another stack is already saved, then saving a new stack discards
      the previous stack.
 
-‘M-x transient-resume’
+Key: M-x transient-resume
      This command resumes the previously suspended stack of transients,
      if any.
 
 
-File: docaCFG4h.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
+File: docYjnvCl.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
 
 2.3 Common Suffix Commands
 ==========================
@@ -295,13 +296,13 @@ section disappears again.  Note, however, that one of these commands is
 described as “Show common permanently”; invoke that if you want the
 common commands to always be shown for all transients.
 
-‘C-x t’ (‘transient-toggle-common’)
+Key: C-x t (transient-toggle-common)
      This command toggles whether the generic commands that are common
      to all transients are always displayed or only after typing the
      incomplete prefix key sequence ‘C-x’.  This only affects the
      current Emacs session.
 
- -- User Option: transient-show-common-commands
+User Option: transient-show-common-commands
      This option controls whether shared suffix commands are shown
      alongside the transient-specific infix and suffix commands.  By
      default, the shared commands are not shown to avoid overwhelming
@@ -318,7 +319,7 @@ one of the following sections.
 of Magit-Popup; see *note FAQ:: for more information.
 
 
-File: docaCFG4h.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
+File: docYjnvCl.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
 
 2.4 Saving Values
 =================
@@ -337,18 +338,18 @@ suffix command, then the value is merely saved to the transient’s
 history.  That value won’t be used when the transient is next invoked,
 but it is easily accessible (see *note Using History::).
 
-‘C-x s’ (‘transient-set’)
+Key: C-x s (transient-set)
      This command saves the value of the active transient for this Emacs
      session.
 
-‘C-x C-s’ (‘transient-save’)
+Key: C-x C-s (transient-save)
      Save the value of the active transient persistently across Emacs
      sessions.
 
-‘C-x C-k’ (‘transient-reset’)
+Key: C-x C-k (transient-reset)
      Clear the set and saved values of the active transient.
 
- -- User Option: transient-values-file
+User Option: transient-values-file
      This option names the file that is used to persist the values of
      transients between Emacs sessions.
 
@@ -359,7 +360,7 @@ their handling of buffer-local values is actually a bit more complicated
 than outlined above and even customizable.
 
 
-File: docaCFG4h.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
+File: docYjnvCl.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
 
 2.5 Using History
 =================
@@ -369,13 +370,15 @@ value is saved to its history.  These values can be cycled through the
 same way one can cycle through the history of commands that read
 user-input in the minibuffer.
 
-‘C-M-p’ (‘transient-history-prev’)
-‘C-x p’
+Key: C-M-p (transient-history-prev)
+
+Key: C-x p
      This command switches to the previous value used for the active
      transient.
 
-‘C-M-n’ (‘transient-history-next’)
-‘C-x n’
+Key: C-M-n (transient-history-next)
+
+Key: C-x n
      This command switches to the next value used for the active
      transient.
 
@@ -391,16 +394,16 @@ that read the same kind of value to also use the same history key (see
 
    Both kinds of history are saved to a file when Emacs is exited.
 
- -- User Option: transient-history-file
+User Option: transient-history-file
      This option names the file that is used to persist the history of
      transients and their infixes between Emacs sessions.
 
- -- User Option: transient-history-limit
+User Option: transient-history-limit
      This option controls how many history elements are kept at the time
      the history is saved in ‘transient-history-file’.
 
 
-File: docaCFG4h.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
+File: docYjnvCl.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
 
 2.6 Getting Help for Suffix Commands
 ====================================
@@ -409,7 +412,7 @@ Transients can have many suffixes and infixes that the user might not be
 familiar with.  To make it trivial to get help for these, Transient
 provides access to the documentation directly from the active transient.
 
-‘C-h’ (‘transient-help’)
+Key: C-h (transient-help)
      This command enters help mode.  When help mode is active, typing a
      key shows information about the suffix command that the key
      normally is bound to (instead of invoking it).  Pressing ‘C-h’ a
@@ -428,7 +431,7 @@ supported.  The fallback is to show the command’s documentation string,
 for non-infix suffixes this is usually appropriate.
 
 
-File: docaCFG4h.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
+File: docYjnvCl.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
 
 2.7 Enabling and Disabling Suffixes
 ===================================
@@ -460,16 +463,16 @@ expect that it won’t be of use to most users, and they should place very
 important suffixes on a lower level, so that they remain available even
 if the user lowers the transient level.
 
- -- User Option: transient-default-level
+User Option: transient-default-level
      This option controls which suffix levels are made available by
      default.  It sets the transient-level for transients for which the
      user has not set that individually.
 
- -- User Option: transient-levels-file
+User Option: transient-levels-file
      This option names the file that is used to persist the levels of
      transients and their suffixes between Emacs sessions.
 
-‘C-x l’ (‘transient-set-level’)
+Key: C-x l (transient-set-level)
      This command enters edit mode.  When edit mode is active, then all
      infixes and suffixes that are currently usable are displayed along
      with their levels.  The colors of the levels indicate whether they
@@ -494,13 +497,13 @@ if the user lowers the transient level.
      Therefore, to control which suffixes are available given a certain
      state, you have to make sure that that state is currently active.
 
-‘C-x a’ (‘transient-toggle-level-limit’)
+Key: C-x a (transient-toggle-level-limit)
      This command toggle whether suffixes that are on levels higher than
      the level specified by ‘transient-default-level’ are temporarily
      available anyway.
 
 
-File: docaCFG4h.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
+File: docYjnvCl.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
 
 2.8 Other Commands
 ==================
@@ -511,18 +514,18 @@ following commands.  These commands are never shown in the transient
 window, and the key bindings are the same as for ‘scroll-up-command’ and
 ‘scroll-down-command’ in other buffers.
 
- -- Command: transient-scroll-up arg
+Command: transient-scroll-up arg
      This command scrolls text of transient popup window upward ARG
      lines.  If ARG is ‘nil’, then it scrolls near full screen.  This is
      a wrapper around ‘scroll-up-command’ (which see).
 
- -- Command: transient-scroll-down arg
+Command: transient-scroll-down arg
      This command scrolls text of transient popup window down ARG lines.
      If ARG is ‘nil’, then it scrolls near full screen.  This is a
      wrapper around ‘scroll-down-command’ (which see).
 
 
-File: docaCFG4h.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
+File: docYjnvCl.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
 
 2.9 Configuration
 =================
@@ -536,7 +539,7 @@ Essential Options
 
 Also see *note Common Suffix Commands::.
 
- -- User Option: transient-show-popup
+User Option: transient-show-popup
      This option controls whether the current transient’s infix and
      suffix commands are shown in the popup buffer.
 
@@ -557,7 +560,7 @@ Also see *note Common Suffix Commands::.
           zero, the popup is shown after that many seconds of inactivity
           (using the absolute value).
 
- -- User Option: transient-enable-popup-navigation
+User Option: transient-enable-popup-navigation
      This option controls whether navigation commands are enabled in the
      transient popup buffer.
 
@@ -572,7 +575,7 @@ Also see *note Common Suffix Commands::.
         • ‘mouse-1’ invokes the clicked on suffix.
         • ‘C-s’ and ‘C-r’ start isearch in the popup buffer.
 
- -- User Option: transient-display-buffer-action
+User Option: transient-display-buffer-action
      This option specifies the action used to display the transient
      popup buffer.  The transient popup buffer is displayed in a window
      using ‘(display-buffer BUFFER transient-display-buffer-action)’.
@@ -614,7 +617,7 @@ Also see *note Common Suffix Commands::.
 Accessibility Options
 ---------------------
 
- -- User Option: transient-force-single-column
+User Option: transient-force-single-column
      This option controls whether the use of a single column to display
      suffixes is enforced.  This might be useful for users with low
      vision who use large text and might otherwise have to scroll in two
@@ -623,7 +626,7 @@ Accessibility Options
 Auxiliary Options
 -----------------
 
- -- User Option: transient-mode-line-format
+User Option: transient-mode-line-format
      This option controls whether the transient popup buffer has a
      mode-line, separator line, or neither.
 
@@ -647,7 +650,7 @@ Auxiliary Options
      Otherwise this can be any mode-line format.  See *note (elisp)Mode
      Line Format::, for details.
 
- -- User Option: transient-semantic-coloring
+User Option: transient-semantic-coloring
      This option controls whether colors are used to indicate the
      transient behavior of commands.
 
@@ -656,7 +659,7 @@ Auxiliary Options
      the prefix is indicated using the line that is drawn when the value
      of ‘transient-mode-line-format’ is ‘line’.
 
- -- User Option: transient-highlight-mismatched-keys
+User Option: transient-highlight-mismatched-keys
      This option controls whether key bindings of infix commands that do
      not match the respective command-line argument should be
      highlighted.  For other infix commands this option has no effect.
@@ -674,7 +677,7 @@ Auxiliary Options
      The highlighting is done using one of the faces
      ‘transient-mismatched-key’ and ‘transient-nonstandard-key’.
 
- -- User Option: transient-substitute-key-function
+User Option: transient-substitute-key-function
      This function is used to modify key bindings.  If the value of this
      option is ‘nil’ (the default), then no substitution is performed.
 
@@ -695,18 +698,18 @@ Auxiliary Options
                         (replace-match "(" t t key 1)
                       key))))
 
- -- User Option: transient-read-with-initial-input
+User Option: transient-read-with-initial-input
      This option controls whether the last history element is used as
      the initial minibuffer input when reading the value of an infix
      argument from the user.  If ‘nil’, there is no initial input and
      the first element has to be accessed the same way as the older
      elements.
 
- -- User Option: transient-hide-during-minibuffer-read
+User Option: transient-hide-during-minibuffer-read
      This option controls whether the transient buffer is hidden while
      user input is being read in the minibuffer.
 
- -- User Option: transient-align-variable-pitch
+User Option: transient-align-variable-pitch
      This option controls whether columns are aligned pixel-wise in the
      popup buffer.
 
@@ -719,7 +722,7 @@ Auxiliary Options
      This option is intended for users who use a variable-pitch font for
      the ‘default’ face.
 
- -- User Option: transient-force-fixed-pitch
+User Option: transient-force-fixed-pitch
      This option controls whether to force the use of a monospaced font
      in popup buffer.  Even if you use a proportional font for the
      ‘default’ face, you might still want to use a monospaced font in
@@ -731,7 +734,7 @@ Developer Options
 
 These options are mainly intended for developers.
 
- -- User Option: transient-detect-key-conflicts
+User Option: transient-detect-key-conflicts
      This option controls whether key binding conflicts should be
      detected at the time the transient is invoked.  If so, this results
      in an error, which prevents the transient from being used.  Because
@@ -744,7 +747,7 @@ These options are mainly intended for developers.
      predicates of those suffixes prevent that more than one of them is
      enabled at a time.
 
- -- User Option: transient-highlight-higher-levels
+User Option: transient-highlight-higher-levels
      This option controls whether suffixes that would not be available
      by default are highlighted.
 
@@ -755,7 +758,7 @@ These options are mainly intended for developers.
      same customization.
 
 
-File: docaCFG4h.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
+File: docYjnvCl.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
 
 3 Modifying Existing Transients
 *******************************
@@ -803,10 +806,9 @@ after the infix argument that toggles ‘-3’ in ‘magit-patch-apply’.
 that tree are not objects but have the form ‘(LEVEL CLASS PLIST)’, where
 PLIST should set at least ‘:key’, ‘:description’ and ‘:command’.
 
- -- Function: transient-insert-suffix prefix loc suffix &optional
-          keep-other
- -- Function: transient-append-suffix prefix loc suffix &optional
-          keep-other
+Function: transient-insert-suffix prefix loc suffix &optional keep-other
+
+Function: transient-append-suffix prefix loc suffix &optional keep-other
      These functions insert the suffix or group SUFFIX into PREFIX
      before or after LOC.
 
@@ -820,18 +822,18 @@ PLIST should set at least ‘:key’, ‘:description’ and ‘:command’.
      possible.  To deal with the former use non-‘nil’ KEEP-OTHER.  To
      deal with the latter remove the conflicting binding explicitly.
 
- -- Function: transient-replace-suffix prefix loc suffix
+Function: transient-replace-suffix prefix loc suffix
      This function replaces the suffix or group at LOC in PREFIX with
      suffix or group SUFFIX.
 
- -- Function: transient-remove-suffix prefix loc
+Function: transient-remove-suffix prefix loc
      This function removes the suffix or group at LOC in PREFIX.
 
- -- Function: transient-get-suffix prefix loc
+Function: transient-get-suffix prefix loc
      This function returns the suffix or group at LOC in PREFIX.  The
      returned value has the form mentioned above.
 
- -- Function: transient-suffix-put prefix loc prop value
+Function: transient-suffix-put prefix loc prop value
      This function edits the suffix or group at LOC in PREFIX, by
      setting the PROP of its plist to VALUE.
 
@@ -845,7 +847,7 @@ functions only ‘transient-get-suffix’ and ‘transient-suffix-put’ may
 signal an error.
 
 
-File: docaCFG4h.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
+File: docYjnvCl.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
 
 4 Defining New Commands
 ***********************
@@ -860,7 +862,7 @@ File: docaCFG4h.info,  Node: Defining New Commands,  Next: Classes and Methods, 
 * Transient State::
 
 
-File: docaCFG4h.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
 
 4.1 Technical Introduction
 ==========================
@@ -960,7 +962,7 @@ incomplete key sequences, and those cannot be interrupted with prefix
 commands.)
 
 
-File: docaCFG4h.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
 
 4.2 Defining Transients
 =======================
@@ -972,8 +974,7 @@ binds the transient’s infix and suffix commands.  In other words, it
 defines the complete transient, not just the transient prefix command
 that is used to invoke that transient.
 
- -- Macro: transient-define-prefix name arglist [docstring] [keyword
-          value]... group... [body...]
+Macro: transient-define-prefix name arglist [docstring] [keyword value]... group... [body...]
      This macro defines NAME as a transient prefix command and binds the
      transient’s infix and suffix commands.
 
@@ -1015,7 +1016,7 @@ that is used to invoke that transient.
      the branch whose variables are being configured.
 
 
-File: docaCFG4h.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
 
 4.3 Binding Suffix and Infix Commands
 =====================================
@@ -1037,7 +1038,7 @@ used in ‘transient-define-prefix’.
 * Suffix Specifications::
 
 
-File: docaCFG4h.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
+File: docYjnvCl.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.1 Group Specifications
 --------------------------
@@ -1175,7 +1176,7 @@ This feature is experimental and should be avoided.
    The form of suffix specifications is documented in the next node.
 
 
-File: docaCFG4h.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
+File: docYjnvCl.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.2 Suffix Specifications
 ---------------------------
@@ -1269,7 +1270,7 @@ argument supported by the constructor of that class.  See *note Suffix
 Slots::.
 
 
-File: docaCFG4h.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
 
 4.4 Defining Suffix and Infix Commands
 ======================================
@@ -1277,8 +1278,7 @@ File: docaCFG4h.info,  Node: Defining Suffix and Infix Commands,  Next: Using In
 Note that an infix is a special kind of suffix.  Depending on context
 “suffixes” means “suffixes (including infixes)” or “non-infix suffixes”.
 
- -- Macro: transient-define-suffix name arglist [docstring] [keyword
-          value]... body...
+Macro: transient-define-suffix name arglist [docstring] [keyword value]... body...
      This macro defines NAME as a transient suffix command.
 
      ARGLIST are the arguments that the command takes.  DOCSTRING is the
@@ -1294,8 +1294,7 @@ Note that an infix is a special kind of suffix.  Depending on context
      ARGLIST.  The infix arguments are usually accessed by using
      ‘transient-args’ inside ‘interactive’.
 
- -- Macro: transient-define-infix name arglist [docstring] [keyword
-          value]...
+Macro: transient-define-infix name arglist [docstring] [keyword value]...
      This macro defines NAME as a transient infix command.
 
      ARGLIST is always ignored (but mandatory never-the-less) and
@@ -1325,8 +1324,7 @@ Note that an infix is a special kind of suffix.  Depending on context
      have to use ‘transient-define-suffix’ to define the infix command
      and use ‘t’ as the value of the ‘:transient’ keyword.
 
- -- Macro: transient-define-argument name arglist [docstring] [keyword
-          value]...
+Macro: transient-define-argument name arglist [docstring] [keyword value]...
      This macro defines NAME as a transient infix command.
 
      This is an alias for ‘transient-define-infix’.  Only use this alias
@@ -1335,7 +1333,7 @@ Note that an infix is a special kind of suffix.  Depending on context
      ‘transient-define-infix’ instead.
 
 
-File: docaCFG4h.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
 
 4.5 Using Infix Arguments
 =========================
@@ -1356,7 +1354,7 @@ mandatory, to access the infix arguments inside the command’s
 ‘transient-args’ function, which for infix arguments serves about the
 same purpose as ‘prefix-arg’ serves for prefix arguments.
 
- -- Function: transient-args prefix
+Function: transient-args prefix
      This function returns the value of the transient prefix command
      PREFIX.
 
@@ -1365,20 +1363,20 @@ same purpose as ‘prefix-arg’ serves for prefix arguments.
      current command was not invoked from PREFIX, then it returns the
      set, saved or default value for PREFIX.
 
- -- Function: transient-arg-value arg args
+Function: transient-arg-value arg args
      This function return the value of ARG as it appears in ARGS.
 
      For a switch a boolean is returned.  For an option the value is
      returned as a string, using the empty string for the empty value,
      or ‘nil’ if the option does not appear in ARGS.
 
- -- Function: transient-suffixes prefix
+Function: transient-suffixes prefix
      This function returns the suffixes of the transient prefix command
      PREFIX.  This is a list of objects.  This function should only be
      used if you need the objects (as opposed to just their values) and
      if the current command is not being invoked from PREFIX.
 
- -- Variable: transient-current-suffixes
+Variable: transient-current-suffixes
      The suffixes of the transient from which this suffix command was
      invoked.  This is a list of objects.  Usually it is sufficient to
      instead use the function ‘transient-args’, which returns a list of
@@ -1386,16 +1384,16 @@ same purpose as ‘prefix-arg’ serves for prefix arguments.
      variable instead, i.e., if you need access to information beside
      the value.
 
- -- Variable: transient-current-command
+Variable: transient-current-command
      The transient from which this suffix command was invoked.  The
      returned value is a symbol, the transient prefix command.
 
- -- Variable: transient-current-prefix
+Variable: transient-current-prefix
      The transient from which this suffix command was invoked.  The
      returned value is a ‘transient-prefix’ object, which holds
      information associated with the transient prefix command.
 
- -- Variable: transient-active-prefix
+Variable: transient-active-prefix
      This function returns the active transient object.  Return ‘nil’ if
      there is no active transient, if the transient buffer isn’t shown,
      and while the active transient is suspended (e.g., while the
@@ -1412,7 +1410,7 @@ same purpose as ‘prefix-arg’ serves for prefix arguments.
      returned if it matches one of the PREFIXES."
 
 
-File: docaCFG4h.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
+File: docYjnvCl.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
 
 4.6 Transient State
 ===================
@@ -1516,7 +1514,7 @@ used even if the value of the prefix’s ‘transient-suffix’ slot is ‘t’.
 In extremely rare cases, one might want to use something else, which can
 be done by setting the infix’s ‘transient’ slot directly.
 
- -- Function: transient--do-stay
+Function: transient–do-stay
      Call the command without exporting variables and stay transient.
 
 Pre-commands for Suffixes
@@ -1528,15 +1526,15 @@ By default, invoking a suffix causes the transient to be exited.
 setting its ‘transient’ slot to a boolean (which is highly recommended),
 or to one of the following pre-commands.
 
- -- Function: transient--do-exit
+Function: transient–do-exit
      Call the command after exporting variables and exit the transient.
 
- -- Function: transient--do-return
+Function: transient–do-return
      Call the command after exporting variables and return to the parent
      prefix.  If there is no parent prefix, then call
      ‘transient--do-exit’.
 
- -- Function: transient--do-call
+Function: transient–do-call
      Call the command after exporting variables and stay transient.
 
    The following pre-commands are only suitable for sub-prefixes.  It is
@@ -1544,7 +1542,7 @@ not necessary to explicitly use these predicates because the correct
 predicate is automatically picked based on the value of the ‘transient’
 slot for the sub-prefix itself.
 
- -- Function: transient--do-recurse
+Function: transient–do-recurse
      Call the transient prefix command, preparing for return to active
      transient.
 
@@ -1556,7 +1554,7 @@ slot for the sub-prefix itself.
      If there is no parent transient, then only call this command and
      skip the second step.
 
- -- Function: transient--do-stack
+Function: transient–do-stack
      Call the transient prefix command, stacking the active transient.
      Push the active transient to the transient stack.
 
@@ -1564,7 +1562,7 @@ slot for the sub-prefix itself.
      is automatically used for suffixes that are prefixes themselves,
      i.e., for sub-prefixes.
 
- -- Function: transient--do-replace
+Function: transient–do-replace
      Call the transient prefix command, replacing the active transient.
      Do not push the active transient to the transient stack.
 
@@ -1572,7 +1570,7 @@ slot for the sub-prefix itself.
      is automatically used for suffixes that are prefixes themselves,
      i.e., for sub-prefixes.
 
- -- Function: transient--do-suspend
+Function: transient–do-suspend
      Suspend the active transient, saving the transient stack.
 
      This is used by the command ‘transient-suspend’ and optionally also
@@ -1598,36 +1596,36 @@ pre-command function, or a shorthand for such a function.
 non-suffixes can be invoked, but if one is invoked, then that exits the
 transient.
 
- -- Function: transient--do-warn
+Function: transient–do-warn
      Call ‘transient-undefined’ and stay transient.
 
- -- Function: transient--do-stay
+Function: transient–do-stay
      Call the command without exporting variables and stay transient.
 
- -- Function: transient--do-leave
+Function: transient–do-leave
      Call the command without exporting variables and exit the
      transient.
 
 Special Pre-Commands
 --------------------
 
- -- Function: transient--do-quit-one
+Function: transient–do-quit-one
      If active, quit help or edit mode, else exit the active transient.
 
      This is used when the user pressed ‘C-g’.
 
- -- Function: transient--do-quit-all
+Function: transient–do-quit-all
      Exit all transients without saving the transient stack.
 
      This is used when the user pressed ‘C-q’.
 
- -- Function: transient--do-suspend
+Function: transient–do-suspend
      Suspend the active transient, saving the transient stack.
 
      This is used when the user pressed ‘C-z’.
 
 
-File: docaCFG4h.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
+File: docYjnvCl.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
 
 5 Classes and Methods
 *********************
@@ -1681,7 +1679,7 @@ This happens in two ways.
 * Predicate Slots::
 
 
-File: docaCFG4h.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
 
 5.1 Group Classes
 =================
@@ -1729,12 +1727,12 @@ beginning of the class specification, e.g., ‘[:class transient-columns
      their elements.
 
 
-File: docaCFG4h.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
 
 5.2 Group Methods
 =================
 
- -- Function: transient-setup-children group children
+Function: transient-setup-children group children
      This generic function can be used to setup the children or a group.
 
      The default implementation usually just returns the children
@@ -1747,7 +1745,7 @@ File: docaCFG4h.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group 
      arbitrary changes to the children including constructing new
      children from scratch.
 
- -- Function: transient--insert-group group
+Function: transient–insert-group group
      This generic function formats the group and its elements and
      inserts the result into the current buffer, which is a temporary
      buffer.  The contents of that buffer are later inserted into the
@@ -1758,7 +1756,7 @@ File: docaCFG4h.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group 
      temporarily make the ‘transient--source-buffer’ the current buffer.
 
 
-File: docaCFG4h.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
 
 5.3 Prefix Classes
 ==================
@@ -1767,7 +1765,7 @@ Currently the ‘transient-prefix’ class is being used for all prefix
 commands and there is only a single generic function that can be
 specialized based on the class of a prefix command.
 
- -- Function: transient--history-init obj
+Function: transient–history-init obj
      This generic function is called while setting up the transient and
      is responsible for initializing the ‘history’ slot.  This is the
      transient-wide history; many individual infixes also have a history
@@ -1783,7 +1781,7 @@ is active, a clone of that object is stored in the variable
 to the active transient’s object should not affect later invocations.
 
 
-File: docaCFG4h.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
 
 5.4 Suffix Classes
 ==================
@@ -1847,7 +1845,7 @@ classes will likely get generalized and added to Transient.  For now
 they are very much subject to change and not documented.
 
 
-File: docaCFG4h.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
 
 5.5 Suffix Methods
 ==================
@@ -1861,12 +1859,12 @@ functions use ‘describe-function’.
 * Suffix Format Methods::
 
 
-File: docaCFG4h.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
+File: docYjnvCl.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
 
 5.5.1 Suffix Value Methods
 --------------------------
 
- -- Function: transient-init-value obj
+Function: transient-init-value obj
      This generic function sets the initial value of the object OBJ.
 
      This function is called for all suffix commands, but unless a
@@ -1876,7 +1874,7 @@ File: docaCFG4h.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,
      implemented for the abstract class ‘transient-infix’, so if your
      class derives from that directly, then you must implement a method.
 
- -- Function: transient-infix-read obj
+Function: transient-infix-read obj
      This generic function determines the new value of the infix object
      OBJ.
 
@@ -1892,14 +1890,14 @@ File: docaCFG4h.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,
      infix command determines what the new value should be, based on the
      previous value.
 
- -- Function: transient-prompt obj
+Function: transient-prompt obj
      This generic function returns the prompt to be used to read infix
      object OBJ’s value.
 
- -- Function: transient-infix-set obj value
+Function: transient-infix-set obj value
      This generic function sets the value of infix object OBJ to VALUE.
 
- -- Function: transient-infix-value obj
+Function: transient-infix-value obj
      This generic function returns the value of the suffix object OBJ.
 
      This function is called by ‘transient-args’ (which see), meaning
@@ -1912,7 +1910,7 @@ File: docaCFG4h.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,
      Usually only infixes have a value, but see the method for
      ‘transient-suffix’.
 
- -- Function: transient-init-scope obj
+Function: transient-init-scope obj
      This generic function sets the scope of the suffix object OBJ.
 
      The scope is actually a property of the transient prefix, not of
@@ -1926,12 +1924,12 @@ File: docaCFG4h.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,
      implementation, which is a noop.
 
 
-File: docaCFG4h.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
+File: docYjnvCl.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
 
 5.5.2 Suffix Format Methods
 ---------------------------
 
- -- Function: transient-format obj
+Function: transient-format obj
      This generic function formats and returns OBJ for display.
 
      When this function is called, then the current buffer is some
@@ -1939,19 +1937,19 @@ File: docaCFG4h.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,
      command was invoked to be current, then do so by temporarily making
      ‘transient--source-buffer’ current.
 
- -- Function: transient-format-key obj
+Function: transient-format-key obj
      This generic function formats OBJ’s ‘key’ for display and returns
      the result.
 
- -- Function: transient-format-description obj
+Function: transient-format-description obj
      This generic function formats OBJ’s ‘description’ for display and
      returns the result.
 
- -- Function: transient-format-value obj
+Function: transient-format-value obj
      This generic function formats OBJ’s value for display and returns
      the result.
 
- -- Function: transient-show-help obj
+Function: transient-show-help obj
      Show help for the prefix, infix or suffix command represented by
      OBJ.
 
@@ -1966,7 +1964,7 @@ File: docaCFG4h.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,
      the command’s documentation string.
 
 
-File: docaCFG4h.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
 
 5.6 Prefix Slots
 ================
@@ -2036,7 +2034,7 @@ set in calls to ‘transient-define-prefix’.
      method you should not have to deal with these slots.
 
 
-File: docaCFG4h.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
 
 5.7 Suffix Slots
 ================
@@ -2168,7 +2166,7 @@ Slots of ‘transient-switches’
      E.g., ‘\\(--\\(topo\\|author-date\\|date\\)-order\\)’.
 
 
-File: docaCFG4h.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
+File: docYjnvCl.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
 
 5.8 Predicate Slots
 ===================
@@ -2199,7 +2197,7 @@ depending on user preference.  See *note Enabling and Disabling
 Suffixes::.
 
 
-File: docaCFG4h.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
+File: docYjnvCl.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
 
 Appendix A FAQ
 **************
@@ -2310,180 +2308,25 @@ have implemented a function, ‘transient-bind-q-to-quit’ that makes the
 necessary changes.  See its documentation string for more information.
 
 
-File: docaCFG4h.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
+File: docYjnvCl.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
 
 Appendix B Keystroke Index
 **************************
 
- [index ]
-* Menu:
-
-* C-g:                                   Aborting and Resuming Transients.
-                                                               (line 27)
-* C-g <1>:                               Aborting and Resuming Transients.
-                                                               (line 27)
-* C-h:                                   Getting Help for Suffix Commands.
-                                                               (line 11)
-* C-M-n:                                 Using History.        (line 18)
-* C-M-p:                                 Using History.        (line 13)
-* C-q:                                   Aborting and Resuming Transients.
-                                                               (line 36)
-* C-x a:                                 Enabling and Disabling Suffixes.
-                                                               (line 68)
-* C-x C-k:                               Saving Values.        (line 29)
-* C-x C-s:                               Saving Values.        (line 25)
-* C-x l:                                 Enabling and Disabling Suffixes.
-                                                               (line 43)
-* C-x n:                                 Using History.        (line 18)
-* C-x p:                                 Using History.        (line 13)
-* C-x s:                                 Saving Values.        (line 21)
-* C-x t:                                 Common Suffix Commands.
-                                                               (line 18)
-* C-z:                                   Aborting and Resuming Transients.
-                                                               (line 41)
-
 
-File: docaCFG4h.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
+File: docYjnvCl.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
 
 Appendix C Command and Function Index
 *************************************
 
- [index ]
-* Menu:
-
-* transient--do-call:                    Transient State.     (line 125)
-* transient--do-exit:                    Transient State.     (line 117)
-* transient--do-leave:                   Transient State.     (line 193)
-* transient--do-quit-all:                Transient State.     (line 205)
-* transient--do-quit-one:                Transient State.     (line 200)
-* transient--do-recurse:                 Transient State.     (line 133)
-* transient--do-replace:                 Transient State.     (line 153)
-* transient--do-return:                  Transient State.     (line 120)
-* transient--do-stack:                   Transient State.     (line 145)
-* transient--do-stay:                    Transient State.     (line 105)
-* transient--do-stay <1>:                Transient State.     (line 190)
-* transient--do-suspend:                 Transient State.     (line 161)
-* transient--do-suspend <1>:             Transient State.     (line 210)
-* transient--do-warn:                    Transient State.     (line 187)
-* transient--history-init:               Prefix Classes.      (line  10)
-* transient--insert-group:               Group Methods.       (line  19)
-* transient-append-suffix:               Modifying Existing Transients.
-                                                              (line  51)
-* transient-arg-value:                   Using Infix Arguments.
-                                                              (line  31)
-* transient-args:                        Using Infix Arguments.
-                                                              (line  22)
-* transient-define-argument:             Defining Suffix and Infix Commands.
-                                                              (line  57)
-* transient-define-infix:                Defining Suffix and Infix Commands.
-                                                              (line  26)
-* transient-define-prefix:               Defining Transients. (line  13)
-* transient-define-suffix:               Defining Suffix and Infix Commands.
-                                                              (line   9)
-* transient-format:                      Suffix Format Methods.
-                                                              (line   6)
-* transient-format-description:          Suffix Format Methods.
-                                                              (line  18)
-* transient-format-key:                  Suffix Format Methods.
-                                                              (line  14)
-* transient-format-value:                Suffix Format Methods.
-                                                              (line  22)
-* transient-get-suffix:                  Modifying Existing Transients.
-                                                              (line  73)
-* transient-help:                        Getting Help for Suffix Commands.
-                                                              (line  11)
-* transient-history-next:                Using History.       (line  18)
-* transient-history-prev:                Using History.       (line  13)
-* transient-infix-read:                  Suffix Value Methods.
-                                                              (line  16)
-* transient-infix-set:                   Suffix Value Methods.
-                                                              (line  36)
-* transient-infix-value:                 Suffix Value Methods.
-                                                              (line  39)
-* transient-init-scope:                  Suffix Value Methods.
-                                                              (line  52)
-* transient-init-value:                  Suffix Value Methods.
-                                                              (line   6)
-* transient-insert-suffix:               Modifying Existing Transients.
-                                                              (line  49)
-* transient-prompt:                      Suffix Value Methods.
-                                                              (line  32)
-* transient-quit-all:                    Aborting and Resuming Transients.
-                                                              (line  36)
-* transient-quit-one:                    Aborting and Resuming Transients.
-                                                              (line  27)
-* transient-quit-seq:                    Aborting and Resuming Transients.
-                                                              (line  27)
-* transient-remove-suffix:               Modifying Existing Transients.
-                                                              (line  70)
-* transient-replace-suffix:              Modifying Existing Transients.
-                                                              (line  66)
-* transient-reset:                       Saving Values.       (line  29)
-* transient-resume:                      Aborting and Resuming Transients.
-                                                              (line  53)
-* transient-save:                        Saving Values.       (line  25)
-* transient-scroll-down:                 Other Commands.      (line  17)
-* transient-scroll-up:                   Other Commands.      (line  12)
-* transient-set:                         Saving Values.       (line  21)
-* transient-set-level:                   Enabling and Disabling Suffixes.
-                                                              (line  43)
-* transient-setup-children:              Group Methods.       (line   6)
-* transient-show-help:                   Suffix Format Methods.
-                                                              (line  26)
-* transient-suffix-put:                  Modifying Existing Transients.
-                                                              (line  77)
-* transient-suffixes:                    Using Infix Arguments.
-                                                              (line  38)
-* transient-suspend:                     Aborting and Resuming Transients.
-                                                              (line  41)
-* transient-toggle-common:               Common Suffix Commands.
-                                                              (line  18)
-* transient-toggle-level-limit:          Enabling and Disabling Suffixes.
-                                                              (line  68)
-
 
-File: docaCFG4h.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
+File: docYjnvCl.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
 
 Appendix D Variable Index
 *************************
 
- [index ]
-* Menu:
-
-* transient-active-prefix:               Using Infix Arguments.
-                                                              (line  61)
-* transient-align-variable-pitch:        Configuration.       (line 185)
-* transient-current-command:             Using Infix Arguments.
-                                                              (line  52)
-* transient-current-prefix:              Using Infix Arguments.
-                                                              (line  56)
-* transient-current-suffixes:            Using Infix Arguments.
-                                                              (line  44)
-* transient-default-level:               Enabling and Disabling Suffixes.
-                                                              (line  33)
-* transient-detect-key-conflicts:        Configuration.       (line 210)
-* transient-display-buffer-action:       Configuration.       (line  51)
-* transient-enable-popup-navigation:     Configuration.       (line  36)
-* transient-force-fixed-pitch:           Configuration.       (line 198)
-* transient-force-single-column:         Configuration.       (line  93)
-* transient-hide-during-minibuffer-read: Configuration.       (line 181)
-* transient-highlight-higher-levels:     Configuration.       (line 223)
-* transient-highlight-mismatched-keys:   Configuration.       (line 135)
-* transient-history-file:                Using History.       (line  33)
-* transient-history-limit:               Using History.       (line  37)
-* transient-levels-file:                 Enabling and Disabling Suffixes.
-                                                              (line  38)
-* transient-mode-line-format:            Configuration.       (line 102)
-* transient-read-with-initial-input:     Configuration.       (line 174)
-* transient-semantic-coloring:           Configuration.       (line 126)
-* transient-show-common-commands:        Common Suffix Commands.
-                                                              (line  23)
-* transient-show-popup:                  Configuration.       (line  15)
-* transient-substitute-key-function:     Configuration.       (line 153)
-* transient-values-file:                 Saving Values.       (line  31)
-
 
-File: docaCFG4h.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
+File: docYjnvCl.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
 
 Appendix E Concept Index
 ************************
@@ -2519,7 +2362,7 @@ Appendix E Concept Index
 * resuming transients:                   Aborting and Resuming Transients.
                                                                (line  6)
 * saving values of arguments:            Saving Values.        (line  6)
-* scope of a transient:                  Defining Transients.  (line 43)
+* scope of a transient:                  Defining Transients.  (line 42)
 * suffix specifications:                 Suffix Specifications.
                                                                (line  6)
 * transient state:                       Transient State.      (line  6)
@@ -2528,7 +2371,7 @@ Appendix E Concept Index
 * value history:                         Using History.        (line  6)
 
 
-File: docaCFG4h.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
+File: docYjnvCl.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
 
 Appendix F GNU General Public License
 *************************************
@@ -3247,68 +3090,68 @@ please read <https://www.gnu.org/licenses/why-not-lgpl.html>.
 
 Tag Table:
 Node: Top763
-Node: Introduction2976
-Ref: Some things that Transient can do3504
-Ref: Complexity in CLI programs3857
-Ref: Using Transient for composing interactive commands4458
-Node: Usage6700
-Node: Invoking Transients7068
-Node: Aborting and Resuming Transients8147
-Node: Common Suffix Commands10768
-Node: Saving Values12604
-Ref: Saving Values-Footnote-113975
-Node: Using History14168
-Node: Getting Help for Suffix Commands15742
-Node: Enabling and Disabling Suffixes17120
-Node: Other Commands20408
-Node: Configuration21384
-Ref: Essential Options21664
-Ref: Accessibility Options25325
-Ref: Auxiliary Options25648
-Ref: Developer Options30611
-Node: Modifying Existing Transients31859
-Node: Defining New Commands36051
-Node: Technical Introduction36414
-Node: Defining Transients42115
-Node: Binding Suffix and Infix Commands44582
-Node: Group Specifications45440
-Node: Suffix Specifications51968
-Node: Defining Suffix and Infix Commands56181
-Node: Using Infix Arguments59229
-Node: Transient State62855
-Ref: Pre-commands for Infixes67670
-Ref: Pre-commands for Suffixes68190
-Ref: Pre-commands for Non-Suffixes70644
-Ref: Special Pre-Commands71780
-Node: Classes and Methods72288
-Node: Group Classes74472
-Node: Group Methods76399
-Node: Prefix Classes77652
-Node: Suffix Classes78743
-Node: Suffix Methods81830
-Node: Suffix Value Methods82151
-Node: Suffix Format Methods84909
-Node: Prefix Slots86388
-Ref: Internal Prefix Slots88523
-Node: Suffix Slots89780
-Ref: Slots of transient-suffix90148
-Ref: Slots of transient-infix91285
-Ref: Slots of transient-variable94581
-Ref: Slots of transient-switches94683
-Node: Predicate Slots95046
-Node: FAQ96481
-Ref: Can I control how the popup buffer is displayed?96610
-Ref: How can I copy text from the popup buffer?96791
-Ref: How can I autoload prefix and suffix commands?97285
-Ref: How does Transient compare to prefix keys and universal arguments?97759
-Ref: How does Transient compare to Magit-Popup and Hydra?98002
-Ref: Why did some of the key bindings change?98196
-Ref: Why does q not quit popups anymore?100549
-Node: Keystroke Index101652
-Node: Command and Function Index103517
-Node: Variable Index110109
-Node: Concept Index112519
-Node: GNU General Public License115255
+Node: Introduction2980
+Ref: Some things that Transient can do3508
+Ref: Complexity in CLI programs3861
+Ref: Using Transient for composing interactive commands4462
+Node: Usage6704
+Node: Invoking Transients7072
+Node: Aborting and Resuming Transients8151
+Node: Common Suffix Commands10744
+Node: Saving Values12569
+Ref: Saving Values-Footnote-113915
+Node: Using History14108
+Node: Getting Help for Suffix Commands15660
+Node: Enabling and Disabling Suffixes17031
+Node: Other Commands20297
+Node: Configuration21265
+Ref: Essential Options21545
+Ref: Accessibility Options25194
+Ref: Auxiliary Options25513
+Ref: Developer Options30444
+Node: Modifying Existing Transients31684
+Node: Defining New Commands35833
+Node: Technical Introduction36196
+Node: Defining Transients41897
+Node: Binding Suffix and Infix Commands44350
+Node: Group Specifications45208
+Node: Suffix Specifications51736
+Node: Defining Suffix and Infix Commands55949
+Node: Using Infix Arguments58955
+Node: Transient State62553
+Ref: Pre-commands for Infixes67368
+Ref: Pre-commands for Suffixes67885
+Ref: Pre-commands for Non-Suffixes70318
+Ref: Special Pre-Commands71445
+Node: Classes and Methods71944
+Node: Group Classes74128
+Node: Group Methods76055
+Node: Prefix Classes77301
+Node: Suffix Classes78389
+Node: Suffix Methods81476
+Node: Suffix Value Methods81797
+Node: Suffix Format Methods84531
+Node: Prefix Slots85990
+Ref: Internal Prefix Slots88125
+Node: Suffix Slots89382
+Ref: Slots of transient-suffix89750
+Ref: Slots of transient-infix90887
+Ref: Slots of transient-variable94183
+Ref: Slots of transient-switches94285
+Node: Predicate Slots94648
+Node: FAQ96083
+Ref: Can I control how the popup buffer is displayed?96212
+Ref: How can I copy text from the popup buffer?96393
+Ref: How can I autoload prefix and suffix commands?96887
+Ref: How does Transient compare to prefix keys and universal arguments?97361
+Ref: How does Transient compare to Magit-Popup and Hydra?97604
+Ref: Why did some of the key bindings change?97798
+Ref: Why does q not quit popups anymore?100151
+Node: Keystroke Index101254
+Node: Command and Function Index101414
+Node: Variable Index101607
+Node: Concept Index101774
+Node: GNU General Public License104510
 
 End Tag Table
 
