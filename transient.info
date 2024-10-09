@@ -1,4 +1,4 @@
-This is doccbHXE8.info, produced by makeinfo version 6.8 from
+This is doc7uY38d.info, produced by makeinfo version 6.8 from
 transient.texi.
 
      Copyright (C) 2018–2024 Free Software Foundation, Inc.
@@ -19,7 +19,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: doccbHXE8.info,  Node: Top,  Next: Introduction,  Up: (dir)
+File: doc7uY38d.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
 Transient User and Developer Manual
 ***********************************
@@ -32,7 +32,7 @@ used to implement similar menus in other packages.
 resource to get over that hurdle is Psionic K’s interactive tutorial,
 available at <https://github.com/positron-solutions/transient-showcase>.
 
-This manual is for Transient version 0.7.5.
+This manual is for Transient version 0.7.7.
 
      Copyright (C) 2018–2024 Free Software Foundation, Inc.
 
@@ -108,7 +108,7 @@ Suffix Methods
 
 
 
-File: doccbHXE8.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+File: doc7uY38d.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
@@ -181,7 +181,7 @@ you’ve tried it, it’s hard to go back to the ‘C-u what can I do here
 again?’ way.
 
 
-File: doccbHXE8.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
+File: doc7uY38d.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
 
 2 Usage
 *******
@@ -199,7 +199,7 @@ File: doccbHXE8.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev:
 * Configuration::
 
 
-File: doccbHXE8.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
+File: doc7uY38d.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
 
 2.1 Invoking Transients
 =======================
@@ -223,7 +223,7 @@ commands may also set some value by side-effect, e.g., by setting the
 value of some variable.
 
 
-File: doccbHXE8.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
+File: doc7uY38d.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
 
 2.2 Aborting and Resuming Transients
 ====================================
@@ -280,7 +280,7 @@ Key: M-x transient-resume
      if any.
 
 
-File: doccbHXE8.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
+File: doc7uY38d.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
 
 2.3 Common Suffix Commands
 ==========================
@@ -319,7 +319,7 @@ one of the following sections.
 of Magit-Popup; see *note FAQ:: for more information.
 
 
-File: doccbHXE8.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
+File: doc7uY38d.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
 
 2.4 Saving Values
 =================
@@ -360,7 +360,7 @@ their handling of buffer-local values is actually a bit more complicated
 than outlined above and even customizable.
 
 
-File: doccbHXE8.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
+File: doc7uY38d.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
 
 2.5 Using History
 =================
@@ -403,7 +403,7 @@ User Option: transient-history-limit
      the history is saved in ‘transient-history-file’.
 
 
-File: doccbHXE8.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
+File: doc7uY38d.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
 
 2.6 Getting Help for Suffix Commands
 ====================================
@@ -431,7 +431,7 @@ supported.  The fallback is to show the command’s documentation string,
 for non-infix suffixes this is usually appropriate.
 
 
-File: doccbHXE8.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
+File: doc7uY38d.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
 
 2.7 Enabling and Disabling Suffixes
 ===================================
@@ -503,7 +503,7 @@ Key: C-x a (transient-toggle-level-limit)
      available anyway.
 
 
-File: doccbHXE8.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
+File: doc7uY38d.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
 
 2.8 Other Commands
 ==================
@@ -525,7 +525,7 @@ Command: transient-scroll-down arg
      wrapper around ‘scroll-down-command’ (which see).
 
 
-File: doccbHXE8.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
+File: doc7uY38d.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
 
 2.9 Configuration
 =================
@@ -758,7 +758,7 @@ User Option: transient-highlight-higher-levels
      same customization.
 
 
-File: doccbHXE8.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
+File: doc7uY38d.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
 
 3 Modifying Existing Transients
 *******************************
@@ -847,7 +847,7 @@ functions only ‘transient-get-suffix’ and ‘transient-suffix-put’ may
 signal an error.
 
 
-File: doccbHXE8.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
+File: doc7uY38d.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
 
 4 Defining New Commands
 ***********************
@@ -862,7 +862,7 @@ File: doccbHXE8.info,  Node: Defining New Commands,  Next: Classes and Methods, 
 * Transient State::
 
 
-File: doccbHXE8.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
 
 4.1 Technical Introduction
 ==========================
@@ -962,7 +962,7 @@ incomplete key sequences, and those cannot be interrupted with prefix
 commands.)
 
 
-File: doccbHXE8.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
 
 4.2 Defining Transients
 =======================
@@ -1016,7 +1016,7 @@ Macro: transient-define-prefix name arglist [docstring] [keyword value]... group
      the branch whose variables are being configured.
 
 
-File: doccbHXE8.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
 
 4.3 Binding Suffix and Infix Commands
 =====================================
@@ -1038,7 +1038,7 @@ used in ‘transient-define-prefix’.
 * Suffix Specifications::
 
 
-File: doccbHXE8.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
+File: doc7uY38d.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.1 Group Specifications
 --------------------------
@@ -1176,7 +1176,7 @@ This feature is experimental and should be avoided.
    The form of suffix specifications is documented in the next node.
 
 
-File: doccbHXE8.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
+File: doc7uY38d.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.2 Suffix Specifications
 ---------------------------
@@ -1270,7 +1270,7 @@ argument supported by the constructor of that class.  See *note Suffix
 Slots::.
 
 
-File: doccbHXE8.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
 
 4.4 Defining Suffix and Infix Commands
 ======================================
@@ -1333,7 +1333,7 @@ Macro: transient-define-argument name arglist [docstring] [keyword value]...
      ‘transient-define-infix’ instead.
 
 
-File: doccbHXE8.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
 
 4.5 Using Infix Arguments
 =========================
@@ -1410,7 +1410,7 @@ Function: transient-active-prefix
      object is only returned if it matches one of the PREFIXES.
 
 
-File: doccbHXE8.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
+File: doc7uY38d.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
 
 4.6 Transient State
 ===================
@@ -1625,7 +1625,7 @@ Function: transient–do-suspend
      This is used when the user pressed ‘C-z’.
 
 
-File: doccbHXE8.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
+File: doc7uY38d.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
 
 5 Classes and Methods
 *********************
@@ -1679,7 +1679,7 @@ This happens in two ways.
 * Predicate Slots::
 
 
-File: doccbHXE8.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
 
 5.1 Group Classes
 =================
@@ -1727,7 +1727,7 @@ beginning of the class specification, e.g., ‘[:class transient-columns
      their elements.
 
 
-File: doccbHXE8.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
 
 5.2 Group Methods
 =================
@@ -1756,7 +1756,7 @@ Function: transient–insert-group group
      temporarily make the ‘transient--source-buffer’ the current buffer.
 
 
-File: doccbHXE8.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
 
 5.3 Prefix Classes
 ==================
@@ -1781,7 +1781,7 @@ is active, a clone of that object is stored in the variable
 to the active transient’s object should not affect later invocations.
 
 
-File: doccbHXE8.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
 
 5.4 Suffix Classes
 ==================
@@ -1845,7 +1845,7 @@ classes will likely get generalized and added to Transient.  For now
 they are very much subject to change and not documented.
 
 
-File: doccbHXE8.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
 
 5.5 Suffix Methods
 ==================
@@ -1859,7 +1859,7 @@ functions use ‘describe-function’.
 * Suffix Format Methods::
 
 
-File: doccbHXE8.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
+File: doc7uY38d.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
 
 5.5.1 Suffix Value Methods
 --------------------------
@@ -1924,7 +1924,7 @@ Function: transient-init-scope obj
      implementation, which is a noop.
 
 
-File: doccbHXE8.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
+File: doc7uY38d.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
 
 5.5.2 Suffix Format Methods
 ---------------------------
@@ -1975,7 +1975,7 @@ Macro: transient-with-help-window &rest body
      and return it.
 
 
-File: doccbHXE8.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
 
 5.6 Prefix Slots
 ================
@@ -2045,7 +2045,7 @@ set in calls to ‘transient-define-prefix’.
      method you should not have to deal with these slots.
 
 
-File: doccbHXE8.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
 
 5.7 Suffix Slots
 ================
@@ -2177,7 +2177,7 @@ Slots of ‘transient-switches’
      E.g., ‘\\(--\\(topo\\|author-date\\|date\\)-order\\)’.
 
 
-File: doccbHXE8.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
+File: doc7uY38d.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
 
 5.8 Predicate Slots
 ===================
@@ -2208,7 +2208,7 @@ depending on user preference.  See *note Enabling and Disabling
 Suffixes::.
 
 
-File: doccbHXE8.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
+File: doc7uY38d.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
 
 Appendix A FAQ
 **************
@@ -2319,25 +2319,25 @@ have implemented a function, ‘transient-bind-q-to-quit’ that makes the
 necessary changes.  See its documentation string for more information.
 
 
-File: doccbHXE8.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
+File: doc7uY38d.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
 
 Appendix B Keystroke Index
 **************************
 
 
-File: doccbHXE8.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
+File: doc7uY38d.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
 
 Appendix C Command and Function Index
 *************************************
 
 
-File: doccbHXE8.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
+File: doc7uY38d.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
 
 Appendix D Variable Index
 *************************
 
 
-File: doccbHXE8.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
+File: doc7uY38d.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
 
 Appendix E Concept Index
 ************************
@@ -2382,7 +2382,7 @@ Appendix E Concept Index
 * value history:                         Using History.        (line  6)
 
 
-File: doccbHXE8.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
+File: doc7uY38d.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
 
 Appendix F GNU General Public License
 *************************************
