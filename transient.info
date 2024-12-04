@@ -1,4 +1,4 @@
-This is doc5J9wpp.info, produced by makeinfo version 6.8 from
+This is docKjesHd.info, produced by makeinfo version 6.8 from
 transient.texi.
 
      Copyright (C) 2018–2024 Free Software Foundation, Inc.
@@ -19,7 +19,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: doc5J9wpp.info,  Node: Top,  Next: Introduction,  Up: (dir)
+File: docKjesHd.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
 Transient User and Developer Manual
 ***********************************
@@ -108,7 +108,7 @@ Suffix Methods
 
 
 
-File: doc5J9wpp.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+File: docKjesHd.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
@@ -181,7 +181,7 @@ you’ve tried it, it’s hard to go back to the ‘C-u what can I do here
 again?’ way.
 
 
-File: doc5J9wpp.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
+File: docKjesHd.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
 
 2 Usage
 *******
@@ -199,7 +199,7 @@ File: doc5J9wpp.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev:
 * Configuration::
 
 
-File: doc5J9wpp.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
+File: docKjesHd.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
 
 2.1 Invoking Transients
 =======================
@@ -223,7 +223,7 @@ commands may also set some value by side-effect, e.g., by setting the
 value of some variable.
 
 
-File: doc5J9wpp.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
+File: docKjesHd.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
 
 2.2 Aborting and Resuming Transients
 ====================================
@@ -280,7 +280,7 @@ Key: M-x transient-resume
      if any.
 
 
-File: doc5J9wpp.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
+File: docKjesHd.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
 
 2.3 Common Suffix Commands
 ==========================
@@ -319,7 +319,7 @@ one of the following sections.
 of Magit-Popup; see *note FAQ:: for more information.
 
 
-File: doc5J9wpp.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
+File: docKjesHd.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
 
 2.4 Saving Values
 =================
@@ -360,7 +360,7 @@ their handling of buffer-local values is actually a bit more complicated
 than outlined above and even customizable.
 
 
-File: doc5J9wpp.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
+File: docKjesHd.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
 
 2.5 Using History
 =================
@@ -403,7 +403,7 @@ User Option: transient-history-limit
      the history is saved in ‘transient-history-file’.
 
 
-File: doc5J9wpp.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
+File: docKjesHd.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
 
 2.6 Getting Help for Suffix Commands
 ====================================
@@ -431,7 +431,7 @@ supported.  The fallback is to show the command’s documentation string,
 for non-infix suffixes this is usually appropriate.
 
 
-File: doc5J9wpp.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
+File: docKjesHd.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
 
 2.7 Enabling and Disabling Suffixes
 ===================================
@@ -503,7 +503,7 @@ Key: C-x a (transient-toggle-level-limit)
      available anyway.
 
 
-File: doc5J9wpp.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
+File: docKjesHd.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
 
 2.8 Other Commands
 ==================
@@ -525,7 +525,7 @@ Command: transient-scroll-down arg
      wrapper around ‘scroll-down-command’ (which see).
 
 
-File: doc5J9wpp.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
+File: docKjesHd.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
 
 2.9 Configuration
 =================
@@ -621,6 +621,9 @@ User Option: transient-display-buffer-action
      If you change the value of this option, then you might also want to
      change the value of ‘transient-mode-line-format’.
 
+     This user option may be overridden if ‘:display-action’ is passed
+     when creating a new prefix with ‘transient-define-prefix’.
+
 Accessibility Options
 ---------------------
 
@@ -653,6 +656,9 @@ User Option: transient-mode-line-format
      ‘transient-key-stay’ (if allowed and transient stays active), or
      ‘transient-key-exit’ (if allowed and they exit the transient) is
      used to draw the line.
+
+     This user option may be overridden if ‘:mode-line-format’ is passed
+     when creating a new prefix with ‘transient-define-prefix’.
 
      Otherwise this can be any mode-line format.  See *note (elisp)Mode
      Line Format::, for details.
@@ -712,9 +718,42 @@ User Option: transient-read-with-initial-input
      the first element has to be accessed the same way as the older
      elements.
 
-User Option: transient-hide-during-minibuffer-read
-     This option controls whether the transient buffer is hidden while
-     user input is being read in the minibuffer.
+User Option: transient-show-during-minibuffer-read
+     This option controls whether the transient menu continues to be
+     displayed while the minibuffer is used to read user input.
+
+     This is only relevant to commands that do not close the menu, such
+     as commands that set infix arguments.  If a command exits the menu,
+     and uses the minibuffer, then the menu is always closed before the
+     minibuffer is entered, irrespective of the value of this option.
+
+     When ‘nil’ (the default), hide the menu while the minibuffer is in
+     use.  When ‘t’, keep showing the menu, but allow for the menu
+     window to be resized to ensure that completion candidates can be
+     displayed.
+
+     When ‘fixed’, keep showing the menu and prevent it from being
+     resized, which may make it impossible to display the completion
+     candidates.  If that ever happens for you, consider using ‘t’ or an
+     integer, as described below.
+
+     If the value is ‘fixed’ and the menu window uses the full height of
+     its frame, then the former is ignored and resizing is allowed
+     anyway.  This is necessary because individual menus may use unusual
+     display actions different from what
+     ‘transient-display-buffer-action’ specifies (likely to display that
+     menu in a side-window).
+
+     When using a third-party mode, which automatically resizes windows
+     (e.g., by calling ‘balance-windows’ on ‘post-command-hook’), then
+     ‘fixed’ (or ‘nil’) is likely a better choice than ‘t’.
+
+     The value can also be an integer, in which case the behavior
+     depends on whether at least that many lines are left to display
+     windows other than the menu window.  If that is the case, display
+     the menu and preserve the size of that window.  Otherwise, allow
+     resizing the menu window if the number is positive, or hide the
+     menu if it is negative.
 
 User Option: transient-align-variable-pitch
      This option controls whether columns are aligned pixel-wise in the
@@ -765,7 +804,7 @@ User Option: transient-highlight-higher-levels
      same customization.
 
 
-File: doc5J9wpp.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
+File: docKjesHd.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
 
 3 Modifying Existing Transients
 *******************************
@@ -854,7 +893,7 @@ functions only ‘transient-get-suffix’ and ‘transient-suffix-put’ may
 signal an error.
 
 
-File: doc5J9wpp.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
+File: docKjesHd.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
 
 4 Defining New Commands
 ***********************
@@ -869,7 +908,7 @@ File: doc5J9wpp.info,  Node: Defining New Commands,  Next: Classes and Methods, 
 * Transient State::
 
 
-File: doc5J9wpp.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
 
 4.1 Technical Introduction
 ==========================
@@ -969,7 +1008,7 @@ incomplete key sequences, and those cannot be interrupted with prefix
 commands.)
 
 
-File: doc5J9wpp.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
 
 4.2 Defining Transients
 =======================
@@ -1023,7 +1062,7 @@ Macro: transient-define-prefix name arglist [docstring] [keyword value]... group
      the branch whose variables are being configured.
 
 
-File: doc5J9wpp.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
 
 4.3 Binding Suffix and Infix Commands
 =====================================
@@ -1045,7 +1084,7 @@ used in ‘transient-define-prefix’.
 * Suffix Specifications::
 
 
-File: doc5J9wpp.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
+File: docKjesHd.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.1 Group Specifications
 --------------------------
@@ -1183,7 +1222,7 @@ This feature is experimental and should be avoided.
    The form of suffix specifications is documented in the next node.
 
 
-File: doc5J9wpp.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
+File: docKjesHd.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.2 Suffix Specifications
 ---------------------------
@@ -1277,7 +1316,7 @@ argument supported by the constructor of that class.  See *note Suffix
 Slots::.
 
 
-File: doc5J9wpp.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
 
 4.4 Defining Suffix and Infix Commands
 ======================================
@@ -1340,7 +1379,7 @@ Macro: transient-define-argument name arglist [docstring] [keyword value]...
      ‘transient-define-infix’ instead.
 
 
-File: doc5J9wpp.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Using Infix Arguments,  Next: Transient State,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
 
 4.5 Using Infix Arguments
 =========================
@@ -1417,7 +1456,7 @@ Function: transient-active-prefix
      object is only returned if it matches one of the PREFIXES.
 
 
-File: doc5J9wpp.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
+File: docKjesHd.info,  Node: Transient State,  Prev: Using Infix Arguments,  Up: Defining New Commands
 
 4.6 Transient State
 ===================
@@ -1632,7 +1671,7 @@ Function: transient–do-suspend
      This is used when the user pressed ‘C-z’.
 
 
-File: doc5J9wpp.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
+File: docKjesHd.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
 
 5 Classes and Methods
 *********************
@@ -1686,7 +1725,7 @@ This happens in two ways.
 * Predicate Slots::
 
 
-File: doc5J9wpp.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
 
 5.1 Group Classes
 =================
@@ -1734,7 +1773,7 @@ beginning of the class specification, e.g., ‘[:class transient-columns
      their elements.
 
 
-File: doc5J9wpp.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
 
 5.2 Group Methods
 =================
@@ -1763,7 +1802,7 @@ Function: transient–insert-group group
      temporarily make the ‘transient--source-buffer’ the current buffer.
 
 
-File: doc5J9wpp.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
 
 5.3 Prefix Classes
 ==================
@@ -1788,7 +1827,7 @@ is active, a clone of that object is stored in the variable
 to the active transient’s object should not affect later invocations.
 
 
-File: doc5J9wpp.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Suffix Classes,  Next: Suffix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
 
 5.4 Suffix Classes
 ==================
@@ -1853,7 +1892,7 @@ classes will likely get generalized and added to Transient.  For now
 they are very much subject to change and not documented.
 
 
-File: doc5J9wpp.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Suffix Classes,  Up: Classes and Methods
 
 5.5 Suffix Methods
 ==================
@@ -1867,7 +1906,7 @@ functions use ‘describe-function’.
 * Suffix Format Methods::
 
 
-File: doc5J9wpp.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
+File: docKjesHd.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
 
 5.5.1 Suffix Value Methods
 --------------------------
@@ -1932,7 +1971,7 @@ Function: transient-init-scope obj
      implementation, which is a noop.
 
 
-File: doc5J9wpp.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
+File: docKjesHd.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
 
 5.5.2 Suffix Format Methods
 ---------------------------
@@ -2002,7 +2041,7 @@ Function: transient-show-summary obj &optional return
      of showing it.  This is used when a tooltip is needed.
 
 
-File: doc5J9wpp.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
 
 5.6 Prefix Slots
 ================
@@ -2039,6 +2078,13 @@ File: doc5J9wpp.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Me
      to match against a specific value, as returned by
      ‘transient-infix-value’, for example, ‘--option=one’.
 
+   • ‘display-action’ determines how this prefix is displayed,
+     overriding ‘transient-display-buffer-action’.  It should have the
+     same type.
+
+   • ‘mode-line-format’ is this prefix’s mode line format, overriding
+     ‘transient-mode-line-format’.  It should have the same type.
+
    • ‘scope’ For some transients it might be necessary to have a sort of
      secondary value, called a “scope”.  See ‘transient-define-prefix’.
 
@@ -2072,7 +2118,7 @@ set in calls to ‘transient-define-prefix’.
      method you should not have to deal with these slots.
 
 
-File: doc5J9wpp.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
 
 5.7 Suffix Slots
 ================
@@ -2209,7 +2255,7 @@ Slots of ‘transient-switches’
      E.g., ‘\\(--\\(topo\\|author-date\\|date\\)-order\\)’.
 
 
-File: doc5J9wpp.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
+File: docKjesHd.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
 
 5.8 Predicate Slots
 ===================
@@ -2258,7 +2304,7 @@ depending on user preference.  See *note Enabling and Disabling
 Suffixes::.
 
 
-File: doc5J9wpp.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
+File: docKjesHd.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
 
 Appendix A FAQ
 **************
@@ -2267,6 +2313,8 @@ A.1 Can I control how the popup buffer is displayed?
 ====================================================
 
 Yes, see ‘transient-display-buffer-action’ in *note Configuration::.
+You can also control how the popup buffer is displayed on a case-by-case
+basis by passing ‘:display-action’ to ‘transient-define-prefix’.
 
 A.2 How can I copy text from the popup buffer?
 ==============================================
@@ -2345,7 +2393,7 @@ potential prefix keys can be used for transient-specific commands
 particular is a prefix that I want to (and already do) use for Magit,
 and also using that for a common command would prevent me from doing so.
 
-   (Also see the next question.)
+   (See also the next question.)
 
 A.7 Why does ‘q’ not quit popups anymore?
 =========================================
@@ -2369,25 +2417,25 @@ have implemented a function, ‘transient-bind-q-to-quit’ that makes the
 necessary changes.  See its documentation string for more information.
 
 
-File: doc5J9wpp.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
+File: docKjesHd.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
 
 Appendix B Keystroke Index
 **************************
 
 
-File: doc5J9wpp.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
+File: docKjesHd.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
 
 Appendix C Command and Function Index
 *************************************
 
 
-File: doc5J9wpp.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
+File: docKjesHd.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
 
 Appendix D Variable Index
 *************************
 
 
-File: doc5J9wpp.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
+File: docKjesHd.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
 
 Appendix E Concept Index
 ************************
@@ -2432,7 +2480,7 @@ Appendix E Concept Index
 * value history:                         Using History.        (line  6)
 
 
-File: doc5J9wpp.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
+File: docKjesHd.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
 
 Appendix F GNU General Public License
 *************************************
@@ -3167,52 +3215,52 @@ Node: Enabling and Disabling Suffixes17027
 Node: Other Commands20293
 Node: Configuration21261
 Ref: Essential Options21541
-Ref: Accessibility Options25597
-Ref: Auxiliary Options25916
-Ref: Developer Options30840
-Node: Modifying Existing Transients32080
-Node: Defining New Commands36229
-Node: Technical Introduction36592
-Node: Defining Transients42293
-Node: Binding Suffix and Infix Commands44746
-Node: Group Specifications45604
-Node: Suffix Specifications52155
-Node: Defining Suffix and Infix Commands56368
-Node: Using Infix Arguments59374
-Node: Transient State62983
-Ref: Pre-commands for Infixes67798
-Ref: Pre-commands for Suffixes68315
-Ref: Pre-commands for Non-Suffixes70748
-Ref: Special Pre-Commands71875
-Node: Classes and Methods72374
-Node: Group Classes74558
-Node: Group Methods76485
-Node: Prefix Classes77731
-Node: Suffix Classes78819
-Node: Suffix Methods81931
-Node: Suffix Value Methods82252
-Node: Suffix Format Methods84986
-Node: Prefix Slots87948
-Ref: Internal Prefix Slots90085
-Node: Suffix Slots91342
-Ref: Slots of transient-suffix91710
-Ref: Slots of transient-infix93144
-Ref: Slots of transient-variable96440
-Ref: Slots of transient-switches96542
-Node: Predicate Slots96905
-Node: FAQ99250
-Ref: Can I control how the popup buffer is displayed?99379
-Ref: How can I copy text from the popup buffer?99560
-Ref: How can I autoload prefix and suffix commands?100054
-Ref: How does Transient compare to prefix keys and universal arguments?100528
-Ref: How does Transient compare to Magit-Popup and Hydra?100771
-Ref: Why did some of the key bindings change?100965
-Ref: Why does q not quit popups anymore?103318
-Node: Keystroke Index104421
-Node: Command and Function Index104581
-Node: Variable Index104774
-Node: Concept Index104941
-Node: GNU General Public License107677
+Ref: Accessibility Options25741
+Ref: Auxiliary Options26060
+Ref: Developer Options32881
+Node: Modifying Existing Transients34121
+Node: Defining New Commands38270
+Node: Technical Introduction38633
+Node: Defining Transients44334
+Node: Binding Suffix and Infix Commands46787
+Node: Group Specifications47645
+Node: Suffix Specifications54196
+Node: Defining Suffix and Infix Commands58409
+Node: Using Infix Arguments61415
+Node: Transient State65024
+Ref: Pre-commands for Infixes69839
+Ref: Pre-commands for Suffixes70356
+Ref: Pre-commands for Non-Suffixes72789
+Ref: Special Pre-Commands73916
+Node: Classes and Methods74415
+Node: Group Classes76599
+Node: Group Methods78526
+Node: Prefix Classes79772
+Node: Suffix Classes80860
+Node: Suffix Methods83972
+Node: Suffix Value Methods84293
+Node: Suffix Format Methods87027
+Node: Prefix Slots89989
+Ref: Internal Prefix Slots92436
+Node: Suffix Slots93693
+Ref: Slots of transient-suffix94061
+Ref: Slots of transient-infix95495
+Ref: Slots of transient-variable98791
+Ref: Slots of transient-switches98893
+Node: Predicate Slots99256
+Node: FAQ101601
+Ref: Can I control how the popup buffer is displayed?101730
+Ref: How can I copy text from the popup buffer?102057
+Ref: How can I autoload prefix and suffix commands?102551
+Ref: How does Transient compare to prefix keys and universal arguments?103025
+Ref: How does Transient compare to Magit-Popup and Hydra?103268
+Ref: Why did some of the key bindings change?103462
+Ref: Why does q not quit popups anymore?105815
+Node: Keystroke Index106918
+Node: Command and Function Index107078
+Node: Variable Index107271
+Node: Concept Index107438
+Node: GNU General Public License110174
 
 End Tag Table
 
