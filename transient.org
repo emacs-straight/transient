@@ -1142,6 +1142,12 @@ constructor of that class.
   contained in a group are right padded, effectively aligning the
   descriptions.
 
+- If a keyword argument accepts a function as value, you an use a
+  ~lambda~ expression.  As a special case, the ~##~ macro (which returns a
+  ~lambda~ expression and is implemented in the ~llama~ package) is also
+  supported.  Inside group specifications, the use of ~##~ is not
+  supported anywhere but directly following a keyword symbol.
+
 The {{{var(ELEMENT)}}}s are either all subgroups, or all suffixes and strings.
 (At least currently no group type exists that would allow mixing
 subgroups with commands at the same level, though in principle there
@@ -1251,6 +1257,12 @@ Finally, details can be specified using optional {{{var(KEYWORD)}}}-{{{var(VALUE
 Each keyword has to be a keyword symbol, either ~:class~ or a keyword
 argument supported by the constructor of that class.  See [[*Suffix
 Slots]].
+
+If a keyword argument accepts a function as value, you an use a ~lambda~
+expression.  As a special case, the ~##~ macro (which returns a ~lambda~
+expression and is implemented in the ~llama~ package) is also supported.
+Inside suffix bindings, the use of ~##~ is not supported anywhere but
+directly following a keyword symbol.
 
 ** Defining Suffix and Infix Commands
 #+cindex: defining suffix commands
@@ -1370,6 +1382,47 @@ function, which for infix arguments serves about the same purpose as
   {{{var(PREFIX)}}}.  This is a list of objects.  This function should only be
   used if you need the objects (as opposed to just their values) and
   if the current command is not being invoked from {{{var(PREFIX)}}}.
+
+** Using Prefix Scope
+
+Some transients have a sort of secondary value, called a scope.  A
+prefix's scope can be accessed using ~transient-scope~; similar to how
+its value can be accessed using ~transient-args~.
+
+- Function: transient-scope prefixes classes ::
+
+  This function returns the scope of the active or current transient
+  prefix command.
+
+  If optional PREFIXES and CLASSES are both nil, return the scope of
+  the prefix currently being setup, making this variation useful, e.g.,
+  in ~:if*~ predicates.  If no prefix is being setup, but the current
+  command was invoked from some prefix, then return the scope of that.
+
+  If PREFIXES is non-nil, it must be a prefix command or a list of such
+  commands.  If CLASSES is non-nil, it must be a prefix class or a list
+  of such classes.  When this function is called from the body or the
+  ~interactive~ form of a suffix command, PREFIXES and/or CLASSES should
+  be non-nil.  If either is non-nil, try the following in order:
+
+  - If the current suffix command was invoked from a prefix, which
+    appears in PREFIXES, return the scope of that prefix.
+
+  - If the current suffix command was invoked from a prefix, and its
+    class derives from one of the CLASSES, return the scope of that
+    prefix.
+
+  - If a prefix is being setup and it appears in PREFIXES, return its
+    scope.
+
+  - If a prefix is being setup and its class derives from one of the
+    CLASSES, return its scope.
+
+  - Finally try to return the default scope of the first command in
+    PREFIXES.  This only works if that slot is set in the respective
+    class definition or using its `transient-init-scope' method.
+
+  If no prefix matches, return nil.
 
 ** Current Suffix Command
 
@@ -2196,8 +2249,9 @@ functions use ~describe-function~.
 - ~mode-line-format~ is this prefix's mode line format, overriding
   ~transient-mode-line-format~.  It should have the same type.
 
-- ~column-width~ is only respected inside ~transient-columns~ groups and
-  allows aligning columns across separate instances of that.
+- ~column-widths~ is only respected inside ~transient-columns~ groups and
+  allows aligning columns across separate instances of that.  A list
+  of integers.
 
 - ~variable-pitch~ controls whether alignment is done pixel-wise to
   account for use of variable-pitch characters, which is useful, e.g.,
@@ -2265,8 +2319,9 @@ Also see [[*Suffix Classes]].
 :END:
 
 This is the abstract superclass of ~transient-suffix~ and ~transient-group~.
-This is where the shared ~if*~ and ~inapt-if*~ slots (see [[*Predicate Slots]])
-and the ~level~ slot (see [[*Enabling and Disabling Suffixes]]) are defined.
+This is where the shared ~if*~ and ~inapt-if*~ slots (see [[*Predicate Slots]]),
+the ~level~ slot (see [[*Enabling and Disabling Suffixes]]), and the ~advice~
+and ~advice*~ slots (see [[*Slots of ~transient-suffix~]]) are defined.
 
 - ~parent~ The object for the parent group.
 
@@ -2307,6 +2362,20 @@ and the ~level~ slot (see [[*Enabling and Disabling Suffixes]]) are defined.
 
 - ~definition~ A command, which is used if the body is omitted when
   defining a command using ~transient-define-suffix~.
+
+The following two slots are experimental.  They can also be set for a
+group, in which case they apply to all suffixes in that group, except
+for suffixes that set the same slot to a non-nil value.
+
+- ~advice~ A function used to advise the command.  The advise is called
+  using ~(apply advice command args)~, i.e., it behaves like an "around"
+  advice.
+
+- ~advice*~ A function used to advise the command.  Unlike ~advice~, this
+  advises not only the command body but also its ~interactive~ spec.  If
+  both slots are non-nil, ~advice~ is used for the body and ~advice*~ is
+  used for the ~interactive~ form.  When advising the ~interactive~ spec,
+  called using ~(funcall advice #'advice-eval-interactive-spec spec)~.
 
 *** Slots of ~transient-infix~
 :PROPERTIES:
