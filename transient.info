@@ -1,4 +1,4 @@
-This is docM7f4d8.info, produced by makeinfo version 6.8 from
+This is docBTBFNO.info, produced by makeinfo version 6.8 from
 transient.texi.
 
      Copyright (C) 2018–2025 Free Software Foundation, Inc.
@@ -19,7 +19,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: docM7f4d8.info,  Node: Top,  Next: Introduction,  Up: (dir)
+File: docBTBFNO.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
 Transient User and Developer Manual
 ***********************************
@@ -32,7 +32,7 @@ used to implement similar menus in other packages.
 resource to get over that hurdle is Psionic K’s interactive tutorial,
 available at <https://github.com/positron-solutions/transient-showcase>.
 
-This manual is for Transient version 0.8.3.
+This manual is for Transient version 0.8.4.
 
      Copyright (C) 2018–2025 Free Software Foundation, Inc.
 
@@ -112,7 +112,7 @@ Suffix Methods
 
 
 
-File: docM7f4d8.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+File: docBTBFNO.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
@@ -185,7 +185,7 @@ you’ve tried it, it’s hard to go back to the ‘C-u what can I do here
 again?’ way.
 
 
-File: docM7f4d8.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
+File: docBTBFNO.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev: Introduction,  Up: Top
 
 2 Usage
 *******
@@ -203,7 +203,7 @@ File: docM7f4d8.info,  Node: Usage,  Next: Modifying Existing Transients,  Prev:
 * Configuration::
 
 
-File: docM7f4d8.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
+File: docBTBFNO.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
 
 2.1 Invoking Transients
 =======================
@@ -228,7 +228,7 @@ commands may also set some value by side-effect, e.g., by setting the
 value of some variable.
 
 
-File: docM7f4d8.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
+File: docBTBFNO.info,  Node: Aborting and Resuming Transients,  Next: Common Suffix Commands,  Prev: Invoking Transients,  Up: Usage
 
 2.2 Aborting and Resuming Transients
 ====================================
@@ -285,7 +285,7 @@ Key: M-x transient-resume
      if any.
 
 
-File: docM7f4d8.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
+File: docBTBFNO.info,  Node: Common Suffix Commands,  Next: Saving Values,  Prev: Aborting and Resuming Transients,  Up: Usage
 
 2.3 Common Suffix Commands
 ==========================
@@ -321,7 +321,7 @@ User Option: transient-show-common-commands
 one of the following sections.
 
 
-File: docM7f4d8.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
+File: docBTBFNO.info,  Node: Saving Values,  Next: Using History,  Prev: Common Suffix Commands,  Up: Usage
 
 2.4 Saving Values
 =================
@@ -363,7 +363,7 @@ their handling of buffer-local values is actually a bit more complicated
 than outlined above and even customizable.
 
 
-File: docM7f4d8.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
+File: docBTBFNO.info,  Node: Using History,  Next: Getting Help for Suffix Commands,  Prev: Saving Values,  Up: Usage
 
 2.5 Using History
 =================
@@ -410,7 +410,7 @@ User Option: transient-history-limit
      the history is saved in ‘transient-history-file’.
 
 
-File: docM7f4d8.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
+File: docBTBFNO.info,  Node: Getting Help for Suffix Commands,  Next: Enabling and Disabling Suffixes,  Prev: Using History,  Up: Usage
 
 2.6 Getting Help for Suffix Commands
 ====================================
@@ -438,7 +438,7 @@ supported.  The fallback is to show the command’s documentation string,
 for non-infix suffixes this is usually appropriate.
 
 
-File: docM7f4d8.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
+File: docBTBFNO.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
 
 2.7 Enabling and Disabling Suffixes
 ===================================
@@ -509,8 +509,47 @@ Key: C-x a (transient-toggle-level-limit)
      the level specified by ‘transient-default-level’ are temporarily
      available anyway.
 
+Function: transient-set-default-level suffix level
+     This function sets the default level of the suffix COMMAND to
+     LEVEL.
+
+     If a suffix command appears in multiple menus, it may make sense to
+     consistently change its level in all those menus at once.  For
+     example, the ‘--gpg-sign’ argument (which is implemented using the
+     command ‘magit:--gpg-sign’), is bound in all of Magit’s menu which
+     create commits.  Users who sometimes sign their commits would want
+     that argument to be available in all of these menus, while for
+     users who never sign it is just unnecessary noise in any menus.
+
+     To always make ‘--gpg-sign’ available, use:
+
+          (transient-set-default-level 'magit:--gpg-sign 1)
+
+     To never make ‘--gpg-sign’ available, use:
+
+          (transient-set-default-level 'magit:--gpg-sign 0)
+
+     This sets the level in the suffix prototype object for this
+     command.  Commands only have a suffix prototype if they were
+     defined using one of ‘transient-define-argument’,
+     ‘transient-define-infix’ and ‘transient-define-suffix’.  For all
+     other commands this would signal an error.  (This is one of the
+     reasons why package authors should use one of these functions to
+     define shared suffix commands, and especially shared arguments.)
+
+     If the user changes the level of a suffix in a particular menu,
+     using ‘C-x l’ as shown above, then that obviously shadows the
+     default.
+
+     It is also possible to set the level of a suffix binding in a
+     particular menu, either when defining the menu using
+     ‘transient-define-prefix,’ or later using
+     ‘transient-insert-suffix’.  If such bindings specify a level, then
+     that also overrides the default.  (Per-suffix default levels is a
+     new feature, so you might encounter this quite often.)
+
 
-File: docM7f4d8.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
+File: docBTBFNO.info,  Node: Other Commands,  Next: Configuration,  Prev: Enabling and Disabling Suffixes,  Up: Usage
 
 2.8 Other Commands
 ==================
@@ -547,7 +586,7 @@ Command: transient-toggle-docstrings
      is used when displaying docstrings.
 
 
-File: docM7f4d8.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
+File: docBTBFNO.info,  Node: Configuration,  Prev: Other Commands,  Up: Usage
 
 2.9 Configuration
 =================
@@ -844,7 +883,7 @@ Variable: transient-setup-buffer-hook
      buffer is current and empty when this hook is runs.
 
 
-File: docM7f4d8.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
+File: docBTBFNO.info,  Node: Modifying Existing Transients,  Next: Defining New Commands,  Prev: Usage,  Up: Top
 
 3 Modifying Existing Transients
 *******************************
@@ -933,7 +972,7 @@ functions only ‘transient-get-suffix’ and ‘transient-suffix-put’ may
 signal an error.
 
 
-File: docM7f4d8.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
+File: docBTBFNO.info,  Node: Defining New Commands,  Next: Classes and Methods,  Prev: Modifying Existing Transients,  Up: Top
 
 4 Defining New Commands
 ***********************
@@ -951,7 +990,7 @@ File: docM7f4d8.info,  Node: Defining New Commands,  Next: Classes and Methods, 
 * Transient State::
 
 
-File: docM7f4d8.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Technical Introduction,  Next: Defining Transients,  Up: Defining New Commands
 
 4.1 Technical Introduction
 ==========================
@@ -1051,7 +1090,7 @@ incomplete key sequences, and those cannot be interrupted with prefix
 commands.)
 
 
-File: docM7f4d8.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Defining Transients,  Next: Binding Suffix and Infix Commands,  Prev: Technical Introduction,  Up: Defining New Commands
 
 4.2 Defining Transients
 =======================
@@ -1105,7 +1144,7 @@ Macro: transient-define-prefix name arglist [docstring] [keyword value]... group
      the branch whose variables are being configured.
 
 
-File: docM7f4d8.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Binding Suffix and Infix Commands,  Next: Defining Suffix and Infix Commands,  Prev: Defining Transients,  Up: Defining New Commands
 
 4.3 Binding Suffix and Infix Commands
 =====================================
@@ -1127,7 +1166,7 @@ used in ‘transient-define-prefix’.
 * Suffix Specifications::
 
 
-File: docM7f4d8.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
+File: docBTBFNO.info,  Node: Group Specifications,  Next: Suffix Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.1 Group Specifications
 --------------------------
@@ -1272,7 +1311,7 @@ This feature is experimental and should be avoided.
    The form of suffix specifications is documented in the next node.
 
 
-File: docM7f4d8.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
+File: docBTBFNO.info,  Node: Suffix Specifications,  Prev: Group Specifications,  Up: Binding Suffix and Infix Commands
 
 4.3.2 Suffix Specifications
 ---------------------------
@@ -1372,7 +1411,7 @@ supported.  Inside suffix bindings, the use of ‘##’ is not supported
 anywhere but directly following a keyword symbol.
 
 
-File: docM7f4d8.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Defining Suffix and Infix Commands,  Next: Using Infix Arguments,  Prev: Binding Suffix and Infix Commands,  Up: Defining New Commands
 
 4.4 Defining Suffix and Infix Commands
 ======================================
@@ -1435,7 +1474,7 @@ Macro: transient-define-argument name arglist [docstring] [keyword value]...
      ‘transient-define-infix’ instead.
 
 
-File: docM7f4d8.info,  Node: Using Infix Arguments,  Next: Using Prefix Scope,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Using Infix Arguments,  Next: Using Prefix Scope,  Prev: Defining Suffix and Infix Commands,  Up: Defining New Commands
 
 4.5 Using Infix Arguments
 =========================
@@ -1487,7 +1526,7 @@ Function: transient-suffixes prefix
      if the current command is not being invoked from PREFIX.
 
 
-File: docM7f4d8.info,  Node: Using Prefix Scope,  Next: Current Suffix Command,  Prev: Using Infix Arguments,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Using Prefix Scope,  Next: Current Suffix Command,  Prev: Using Infix Arguments,  Up: Defining New Commands
 
 4.6 Using Prefix Scope
 ======================
@@ -1534,7 +1573,7 @@ Function: transient-scope prefixes classes
      If no prefix matches, return nil.
 
 
-File: docM7f4d8.info,  Node: Current Suffix Command,  Next: Current Prefix Command,  Prev: Using Prefix Scope,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Current Suffix Command,  Next: Current Prefix Command,  Prev: Using Prefix Scope,  Up: Defining New Commands
 
 4.7 Current Suffix Command
 ==========================
@@ -1587,7 +1626,7 @@ Variable: transient-current-suffixes
      the value.
 
 
-File: docM7f4d8.info,  Node: Current Prefix Command,  Next: Transient State,  Prev: Current Suffix Command,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Current Prefix Command,  Next: Transient State,  Prev: Current Suffix Command,  Up: Defining New Commands
 
 4.8 Current Prefix Command
 ==========================
@@ -1642,7 +1681,7 @@ Function: transient-active-prefix &optional prefixes
      object is only returned if it matches one of the PREFIXES.
 
 
-File: docM7f4d8.info,  Node: Transient State,  Prev: Current Prefix Command,  Up: Defining New Commands
+File: docBTBFNO.info,  Node: Transient State,  Prev: Current Prefix Command,  Up: Defining New Commands
 
 4.9 Transient State
 ===================
@@ -1857,7 +1896,7 @@ Function: transient–do-suspend
      This is used when the user pressed ‘C-z’.
 
 
-File: docM7f4d8.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
+File: docBTBFNO.info,  Node: Classes and Methods,  Next: FAQ,  Prev: Defining New Commands,  Up: Top
 
 5 Classes and Methods
 *********************
@@ -1910,7 +1949,7 @@ This happens in two ways.
 * Predicate Slots::
 
 
-File: docM7f4d8.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Group Classes,  Next: Group Methods,  Up: Classes and Methods
 
 5.1 Group Classes
 =================
@@ -1958,7 +1997,7 @@ beginning of the class specification, e.g., ‘[:class transient-columns
      their elements.
 
 
-File: docM7f4d8.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Group Methods,  Next: Prefix Classes,  Prev: Group Classes,  Up: Classes and Methods
 
 5.2 Group Methods
 =================
@@ -1988,7 +2027,7 @@ Function: transient–insert-group group
      buffer.
 
 
-File: docM7f4d8.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Prefix Classes,  Next: Suffix Classes,  Prev: Group Methods,  Up: Classes and Methods
 
 5.3 Prefix Classes
 ==================
@@ -2006,7 +2045,7 @@ is active, a clone of that object is stored in the variable
 to the active transient’s object should not affect later invocations.
 
 
-File: docM7f4d8.info,  Node: Suffix Classes,  Next: Prefix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Suffix Classes,  Next: Prefix Methods,  Prev: Prefix Classes,  Up: Classes and Methods
 
 5.4 Suffix Classes
 ==================
@@ -2089,7 +2128,7 @@ classes will likely get generalized and added to Transient.  For now
 they are very much subject to change and not documented.
 
 
-File: docM7f4d8.info,  Node: Prefix Methods,  Next: Suffix Methods,  Prev: Suffix Classes,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Prefix Methods,  Next: Suffix Methods,  Prev: Suffix Classes,  Up: Classes and Methods
 
 5.5 Prefix Methods
 ==================
@@ -2144,7 +2183,7 @@ prefix commands.  The default method effectively describes the command
 using ‘describe-function’.
 
 
-File: docM7f4d8.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Prefix Methods,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Suffix Methods,  Next: Prefix Slots,  Prev: Prefix Methods,  Up: Classes and Methods
 
 5.6 Suffix Methods
 ==================
@@ -2158,7 +2197,7 @@ functions use ‘describe-function’.
 * Suffix Format Methods::
 
 
-File: docM7f4d8.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
+File: docBTBFNO.info,  Node: Suffix Value Methods,  Next: Suffix Format Methods,  Up: Suffix Methods
 
 5.6.1 Suffix Value Methods
 --------------------------
@@ -2236,7 +2275,7 @@ Function: transient-init-scope obj
      default implementation, which is a noop.
 
 
-File: docM7f4d8.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
+File: docBTBFNO.info,  Node: Suffix Format Methods,  Prev: Suffix Value Methods,  Up: Suffix Methods
 
 5.6.2 Suffix Format Methods
 ---------------------------
@@ -2306,7 +2345,7 @@ Function: transient-show-summary obj &optional return
      of showing it.  This is used when a tooltip is needed.
 
 
-File: docM7f4d8.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Prefix Slots,  Next: Suffix Slots,  Prev: Suffix Methods,  Up: Classes and Methods
 
 5.7 Prefix Slots
 ================
@@ -2431,7 +2470,7 @@ set in calls to ‘transient-define-prefix’.
      properly exited, even in case of an error.
 
 
-File: docM7f4d8.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Suffix Slots,  Next: Predicate Slots,  Prev: Prefix Slots,  Up: Classes and Methods
 
 5.8 Suffix Slots
 ================
@@ -2597,7 +2636,7 @@ Slots of ‘transient-switches’
      E.g., ‘\\(--\\(topo\\|author-date\\|date\\)-order\\)’.
 
 
-File: docM7f4d8.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
+File: docBTBFNO.info,  Node: Predicate Slots,  Prev: Suffix Slots,  Up: Classes and Methods
 
 5.9 Predicate Slots
 ===================
@@ -2646,7 +2685,7 @@ depending on user preference.  See *note Enabling and Disabling
 Suffixes::.
 
 
-File: docM7f4d8.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
+File: docBTBFNO.info,  Node: FAQ,  Next: Keystroke Index,  Prev: Classes and Methods,  Up: Top
 
 Appendix A FAQ
 **************
@@ -2759,25 +2798,25 @@ have implemented a function, ‘transient-bind-q-to-quit’ that makes the
 necessary changes.  See its documentation string for more information.
 
 
-File: docM7f4d8.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
+File: docBTBFNO.info,  Node: Keystroke Index,  Next: Command and Function Index,  Prev: FAQ,  Up: Top
 
 Appendix B Keystroke Index
 **************************
 
 
-File: docM7f4d8.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
+File: docBTBFNO.info,  Node: Command and Function Index,  Next: Variable Index,  Prev: Keystroke Index,  Up: Top
 
 Appendix C Command and Function Index
 *************************************
 
 
-File: docM7f4d8.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
+File: docBTBFNO.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command and Function Index,  Up: Top
 
 Appendix D Variable Index
 *************************
 
 
-File: docM7f4d8.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
+File: docBTBFNO.info,  Node: Concept Index,  Next: GNU General Public License,  Prev: Variable Index,  Up: Top
 
 Appendix E Concept Index
 ************************
@@ -2822,7 +2861,7 @@ Appendix E Concept Index
 * value history:                         Using History.        (line  6)
 
 
-File: docM7f4d8.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
+File: docBTBFNO.info,  Node: GNU General Public License,  Prev: Concept Index,  Up: Top
 
 Appendix F GNU General Public License
 *************************************
@@ -3554,65 +3593,65 @@ Ref: Saving Values-Footnote-114001
 Node: Using History14194
 Node: Getting Help for Suffix Commands15874
 Node: Enabling and Disabling Suffixes17245
-Node: Other Commands20511
-Node: Configuration22172
-Ref: Essential Options22452
-Ref: Accessibility Options29258
-Ref: Auxiliary Options29577
-Ref: Developer Options34131
-Ref: Hook Variables35371
-Node: Modifying Existing Transients35650
-Node: Defining New Commands39799
-Node: Technical Introduction40239
-Node: Defining Transients45939
-Node: Binding Suffix and Infix Commands48392
-Node: Group Specifications49250
-Node: Suffix Specifications56186
-Node: Defining Suffix and Infix Commands60750
-Node: Using Infix Arguments63756
-Node: Using Prefix Scope66129
-Node: Current Suffix Command68131
-Node: Current Prefix Command70480
-Node: Transient State73020
-Ref: Pre-commands for Infixes77836
-Ref: Pre-commands for Suffixes78353
-Ref: Pre-commands for Non-Suffixes80786
-Ref: Special Pre-Commands81913
-Node: Classes and Methods82412
-Node: Group Classes84499
-Node: Group Methods86426
-Node: Prefix Classes87679
-Node: Suffix Classes88524
-Node: Prefix Methods92504
-Node: Suffix Methods94881
-Node: Suffix Value Methods95202
-Node: Suffix Format Methods98523
-Node: Prefix Slots101497
-Ref: Value and Scope101647
-Ref: Behavior103126
-Ref: Appearance104467
-Ref: Documentation105153
-Ref: Internal105773
-Node: Suffix Slots107128
-Ref: Slots of transient-child107496
-Ref: Slots of transient-suffix107954
-Ref: Slots of transient-infix110322
-Ref: Slots of transient-variable113618
-Ref: Slots of transient-switches113720
-Node: Predicate Slots114083
-Node: FAQ116428
-Ref: Can I control how the popup buffer is displayed?116557
-Ref: How can I copy text from the popup buffer?116884
-Ref: How can I autoload prefix and suffix commands?117378
-Ref: How does Transient compare to prefix keys and universal arguments?117852
-Ref: How does Transient compare to Magit-Popup and Hydra?118095
-Ref: Why did some of the key bindings change?118289
-Ref: Why does q not quit popups anymore?120642
-Node: Keystroke Index121745
-Node: Command and Function Index121905
-Node: Variable Index122098
-Node: Concept Index122265
-Node: GNU General Public License125001
+Node: Other Commands22393
+Node: Configuration24054
+Ref: Essential Options24334
+Ref: Accessibility Options31140
+Ref: Auxiliary Options31459
+Ref: Developer Options36013
+Ref: Hook Variables37253
+Node: Modifying Existing Transients37532
+Node: Defining New Commands41681
+Node: Technical Introduction42121
+Node: Defining Transients47821
+Node: Binding Suffix and Infix Commands50274
+Node: Group Specifications51132
+Node: Suffix Specifications58068
+Node: Defining Suffix and Infix Commands62632
+Node: Using Infix Arguments65638
+Node: Using Prefix Scope68011
+Node: Current Suffix Command70013
+Node: Current Prefix Command72362
+Node: Transient State74902
+Ref: Pre-commands for Infixes79718
+Ref: Pre-commands for Suffixes80235
+Ref: Pre-commands for Non-Suffixes82668
+Ref: Special Pre-Commands83795
+Node: Classes and Methods84294
+Node: Group Classes86381
+Node: Group Methods88308
+Node: Prefix Classes89561
+Node: Suffix Classes90406
+Node: Prefix Methods94386
+Node: Suffix Methods96763
+Node: Suffix Value Methods97084
+Node: Suffix Format Methods100405
+Node: Prefix Slots103379
+Ref: Value and Scope103529
+Ref: Behavior105008
+Ref: Appearance106349
+Ref: Documentation107035
+Ref: Internal107655
+Node: Suffix Slots109010
+Ref: Slots of transient-child109378
+Ref: Slots of transient-suffix109836
+Ref: Slots of transient-infix112204
+Ref: Slots of transient-variable115500
+Ref: Slots of transient-switches115602
+Node: Predicate Slots115965
+Node: FAQ118310
+Ref: Can I control how the popup buffer is displayed?118439
+Ref: How can I copy text from the popup buffer?118766
+Ref: How can I autoload prefix and suffix commands?119260
+Ref: How does Transient compare to prefix keys and universal arguments?119734
+Ref: How does Transient compare to Magit-Popup and Hydra?119977
+Ref: Why did some of the key bindings change?120171
+Ref: Why does q not quit popups anymore?122524
+Node: Keystroke Index123627
+Node: Command and Function Index123787
+Node: Variable Index123980
+Node: Concept Index124147
+Node: GNU General Public License126883
 
 End Tag Table
 

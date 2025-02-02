@@ -1,5 +1,5 @@
 # -*- mode: org -*-
-* v0.8.4    UNRELEASED
+* v0.8.4    2025-02-01
 
 - Added new option ~transient-show-docstring-format~.  65cd6cec
 
@@ -15,6 +15,10 @@
 
 - ~transient-scope~ can now also match against prefix classes, not just
   specific prefix commands.  #334
+
+- The default level of a suffix command can now be set via its
+  prototype, using the new function ~transient-set-default-level~.
+  f6c249c7
 
 * v0.8.3    2025-01-03
 
