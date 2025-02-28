@@ -621,6 +621,11 @@ Also see [[* Common Suffix Commands]].
   For alternatives see [[info:elisp#Buffer Display Action Functions]],
   and [[info:elisp#Buffer Display Action Alists]].
 
+  When you switch to a different ACTION, you should keep the ALIST
+  entries for ~dedicated~ and ~inhibit-same-window~ in most cases.
+  Do not drop them because you are unsure whether they are needed;
+  if you are unsure, then keep them.
+
   Note that the buffer that was current before the transient buffer
   is shown should remain the current buffer.  Many suffix commands
   act on the thing at point, if appropriate, and if the transient
@@ -864,8 +869,10 @@ that tree are not objects but have the form {{{codevar((LEVEL CLASS PLIST))}}}, 
   they are never active at the same time, see [[*Predicate Slots]].
 
   Unfortunately both false-positives and false-negatives are possible.
-  To deal with the former use non-~nil~ {{{var(KEEP-OTHER.)}}}  To deal with the
-  latter remove the conflicting binding explicitly.
+  To deal with the former use non-~nil~ {{{var(KEEP-OTHER.)}}}  The symbol ~always~
+  prevents the removal of a false-positive in some cases where other
+  non-~nil~ values would fail.  To deal with false-negatives remove the
+  conflicting binding separately, using ~transient-remove-suffix~.
 
 - Function: transient-replace-suffix prefix loc suffix ::
 
@@ -1655,16 +1662,9 @@ For completeness sake, some notes about complications:
 
 - While a sub-prefix is active we nearly always want {{{kbd(C-g)}}} to take the
   user back to the “super-prefix”, even when the other suffixes don't
-  do that.  However, in rare cases this may not be desirable, and that
-  makes the following complication necessary:
-
-  For ~transient-suffix~ objects the ~transient~ slot is unbound.  We can
-  ignore that for the most part because ~nil~ and the slot being unbound
-  are treated as equivalent, and mean “do exit”.  That isn't actually
-  true for suffixes that are sub-prefixes though.  For such suffixes
-  unbound means “do exit but allow going back”, which is the default,
-  while ~nil~ means “do exit permanently”, which requires that slot to
-  be explicitly set to that value.
+  do that.  However, in rare cases this may not be desirable, in which
+  case ~replace~ can be used as the value of the sub-prefix's ~transient~
+  slot.
 
 *** Pre-commands for Infixes
 :PROPERTIES:
@@ -1712,7 +1712,7 @@ slot for the sub-prefix itself.
 
 - Function: transient--do-recurse ::
 
-  Call the transient prefix command, preparing for return to active
+  Call the transient prefix command, preparing for return to outer
   transient.
 
   Whether we actually return to the parent transient is ultimately
