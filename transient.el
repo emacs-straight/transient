@@ -2361,11 +2361,7 @@ value.  Otherwise return CHILDREN as is.")
                           level
                           (and proto (oref proto level))
                           transient--default-child-level)))
-    (let ((fn (and (symbolp cmd)
-                   (symbol-function cmd))))
-      (when (autoloadp fn)
-        (transient--debug "   autoload %s" cmd)
-        (autoload-do-load fn)))
+    (transient--load-command-if-autoload cmd)
     (when (transient--use-level-p level)
       (let ((obj (if (child-of-class-p class 'transient-information)
                      (apply class :parent parent :level level args)
@@ -2482,6 +2478,13 @@ value.  Otherwise return CHILDREN as is.")
                  :inapt-if-nil :inapt-if-non-nil
                  :inapt-if-mode :inapt-if-not-mode
                  :inapt-if-derived :inapt-if-not-derived))))
+
+(defun transient--load-command-if-autoload (cmd)
+  (when-let* (((symbolp cmd))
+              (fn (symbol-function cmd))
+              ((autoloadp fn)))
+    (transient--debug "   autoload %s" cmd)
+    (autoload-do-load fn)))
 
 ;;; Flow-Control
 
@@ -2653,8 +2656,7 @@ value.  Otherwise return CHILDREN as is.")
        ,@body)))
 
 (defun transient--wrap-command ()
-  (when (autoloadp this-command)
-    (autoload-do-load this-command))
+  (transient--load-command-if-autoload this-command)
   (static-if (>= emacs-major-version 30)
       (letrec
           ((command this-command)
@@ -4496,6 +4498,7 @@ apply the face `transient-unreachable' to the complete string."
                        (funcall (oref transient--prefix suffix-description)
                                 obj)))))
     (when-let* ((transient--docsp)
+                ((slot-boundp obj 'command))
                 (cmd (oref obj command))
                 ((not (memq 'transient--default-infix-command
                             (function-alias-p cmd))))
@@ -4874,7 +4877,8 @@ This is used when a tooltip is needed.")
         ((doc (cond ((functionp summary)
                      (funcall summary obj))
                     (summary)
-                    ((car (split-string (documentation command) "\n")))))
+                    ((documentation command)
+                     (car (split-string (documentation command) "\n")))))
          ((stringp doc))
          ((not (equal doc
                       (car (split-string (documentation
