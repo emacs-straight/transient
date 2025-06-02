@@ -6,8 +6,8 @@
 ;; Homepage: https://github.com/magit/transient
 ;; Keywords: extensions
 
-;; Package-Version: 0.8.8
-;; Package-Requires: ((emacs "26.1") (compat "30.1.0.0") (seq "2.24"))
+;; Package-Version: 0.9.0
+;; Package-Requires: ((emacs "26.1") (compat "30.1") (seq "2.24"))
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -34,7 +34,7 @@
 
 ;;; Code:
 
-(defconst transient-version "0.8.8")
+(defconst transient-version "0.9.0")
 
 (require 'cl-lib)
 (require 'compat)
@@ -1350,9 +1350,10 @@ commands are aliases for."
               (guard (commandp (cadr spec))))
          (use :description (macroexp-quote (pop spec)))))
       (pcase (car spec)
-        ((or :info :info*))
+        ((or :info :info* :cons))
         ((and (cl-type keyword) invalid)
-         (error "Need command, argument, `:info' or `:info*'; got `%s'" invalid))
+         (error "Need command, argument, `:info', `:info*' or `:cons'; got `%s'"
+                invalid))
         ((cl-type symbol)
          (use :command (macroexp-quote (pop spec))))
         ;; During macro-expansion this is expected to be a `lambda'
@@ -1407,6 +1408,15 @@ commands are aliases for."
                     (use :description val))
             (:info* (setq class 'transient-information*)
                     (use :description val))
+            (:cons
+             (setq class 'transient-cons-option)
+             (use :command
+                  (let ((sym (intern (format "transient:%s:%s" prefix val))))
+                    `(prog1 ',sym
+                       (put ',sym 'interactive-only t)
+                       (put ',sym 'completion-predicate #'transient--suffix-only)
+                       (defalias ',sym #'transient--default-infix-command))))
+             (use :argument val))
             ((guard (eq (car-safe val) '\,))
              (use key (cadr val)))
             ((guard (or (symbolp val)
@@ -1549,7 +1559,7 @@ Intended for use in a group's `:setup-children' function."
      (t
       (when-let* (((not (eq keep-other 'always)))
                   (bindingp (listp suf))
-                  (key (transient--spec-key suf))
+                  (key (transient--suffix-key suf))
                   (conflict (car (transient--locate-child prefix key)))
                   (conflictp
                    (and (not (and (eq action 'replace)
@@ -1702,19 +1712,17 @@ See info node `(transient)Modifying Existing Transients'."
     (vector (seq-some (lambda (subgroup)
                         (transient--locate-child subgroup loc))
                       (aref group 2)))
-    (list   (let* ((props (transient--suffix-props child))
-                   (cmd (plist-get props :command)))
-              (and (if (symbolp loc)
-                       (eq cmd loc)
-                     (equal (kbd (or (plist-get props :key)
-                                     (transient--command-key cmd)))
-                            (kbd loc)))
-                   (list child group))))))
+    (list   (and (if (symbolp loc)
+                     (eq (plist-get (transient--suffix-props child) :command)
+                         loc)
+                   (equal (kbd (transient--suffix-key child))
+                          (kbd loc)))
+                 (list child group)))))
 
 (defun transient--nth (n list)
   (nth (if (< n 0) (- (length list) (abs n)) n) list))
 
-(defun transient--spec-key (spec)
+(defun transient--suffix-key (spec)
   (let ((props (transient--suffix-props spec)))
     (or (plist-get props :key)
         (transient--command-key
@@ -2542,7 +2550,9 @@ value.  Otherwise return CHILDREN as is.")
   (if (transient-switches--eieio-childp obj)
       (cl-call-next-method obj)
     (when-let* (((not (slot-boundp obj 'shortarg)))
-                (shortarg (transient--derive-shortarg (oref obj argument))))
+                (argument (oref obj argument))
+                ((stringp argument))
+                (shortarg (transient--derive-shortarg argument)))
       (oset obj shortarg shortarg))
     (unless (slot-boundp obj 'key)
       (if (slot-boundp obj 'shortarg)
@@ -2639,6 +2649,7 @@ value.  Otherwise return CHILDREN as is.")
   (add-hook 'pre-command-hook  #'transient--pre-command 99)
   (add-hook 'post-command-hook #'transient--post-command)
   (advice-add 'recursive-edit :around #'transient--recursive-edit)
+  (set-default-toplevel-value 'inhibit-quit t)
   (when transient--exitp
     ;; This prefix command was invoked as the suffix of another.
     ;; Prevent `transient--post-command' from removing the hooks
@@ -2986,6 +2997,8 @@ value.  Otherwise return CHILDREN as is.")
       (setq transient--current-suffix nil))
     (cond (resume (transient--stack-pop))
           ((not replace)
+           (setq quit-flag nil)
+           (set-default-toplevel-value 'inhibit-quit nil)
            (run-hooks 'transient-post-exit-hook)))))
 
 (defun transient--stack-push ()
@@ -3065,9 +3078,10 @@ value.  Otherwise return CHILDREN as is.")
 (defun transient--emergency-exit (&optional id)
   "Exit the current transient command after an error occurred.
 When no transient is active (i.e., when `transient--prefix' is
-nil) then do nothing.  Optional ID is a keyword identifying the
-exit."
+nil) then only reset `inhibit-quit'.  Optional ID is a keyword
+identifying the exit."
   (transient--debug 'emergency-exit id)
+  (set-default-toplevel-value 'inhibit-quit nil)
   (when transient--prefix
     (setq transient--stack nil)
     (setq transient--exitp t)
@@ -3570,14 +3584,15 @@ such as when suggesting a new feature or reporting an issue."
   :description "Echo arguments"
   :key "x"
   (interactive (list (transient-args transient-current-command)))
-  (message "%s: %s"
-           (key-description (this-command-keys))
-           (mapconcat (lambda (arg)
-                        (propertize (if (string-match-p " " arg)
-                                        (format "%S" arg)
-                                      arg)
-                                    'face 'transient-argument))
-                      arguments " ")))
+  (if (seq-every-p #'stringp arguments)
+      (message "%s: %s" (key-description (this-command-keys))
+               (mapconcat (lambda (arg)
+                            (propertize (if (string-match-p " " arg)
+                                            (format "%S" arg)
+                                          arg)
+                                        'face 'transient-argument))
+                          arguments " "))
+    (message "%s: %S" (key-description (this-command-keys)) arguments)))
 
 ;;; Value
 ;;;; Init
@@ -3866,15 +3881,14 @@ prompt."
                       prompt)))
         (if (stringp prompt)
             prompt
-          "(BUG: no prompt): "))
-    (or (and-let* ((arg (and (slot-boundp obj 'argument) (oref obj argument))))
-          (if (and (stringp arg) (string-suffix-p "=" arg))
-              arg
-            (concat arg ": ")))
-        (and-let* ((var (and (slot-boundp obj 'variable) (oref obj variable))))
-          (and (stringp var)
-               (concat var ": ")))
-        "(BUG: no prompt): ")))
+          "[BUG: invalid prompt]: "))
+    (if-let* ((name (or (and (slot-boundp obj 'argument) (oref obj argument))
+                        (and (slot-boundp obj 'variable) (oref obj variable)))))
+        (if (and (stringp name)
+                 (string-suffix-p "=" name))
+            name
+          (format "%s: " name))
+      "[BUG: no prompt]: ")))
 
 ;;;; Set
 
@@ -4684,7 +4698,7 @@ apply the face `transient-unreachable' to the complete string."
                       'transient-inactive-argument)))
 
 (cl-defmethod transient-format-value ((obj transient-option))
-  (let ((argument (oref obj argument)))
+  (let ((argument (prin1-to-string (oref obj argument) t)))
     (if-let ((value (oref obj value)))
         (pcase-exhaustive (oref obj multi-value)
           ('nil
@@ -5313,6 +5327,29 @@ as stand-in for elements of exhausted lists."
 
 (defun transient-lisp-variable--reader (prompt initial-input _history)
   (read--expression prompt initial-input))
+
+;;;; `transient-cons-option'
+
+(defclass transient-cons-option (transient-option)
+  ((format :initform " %k %d: %v"))
+  "[Experimental] Class used for unencoded key-value pairs.")
+
+(cl-defmethod transient-infix-value ((obj transient-cons-option))
+  "Return ARGUMENT and VALUE as a cons-cell or nil if the latter is nil."
+  (and-let* ((value (oref obj value)))
+    (cons (oref obj argument) value)))
+
+(cl-defmethod transient-format-description ((obj transient-cons-option))
+  (or (oref obj description)
+      (let ((description (prin1-to-string (oref obj argument) t)))
+        (if (string-prefix-p ":" description)
+            (substring description 1)
+          description))))
+
+(cl-defmethod transient-format-value ((obj transient-cons-option))
+  (let ((value (oref obj value)))
+    (propertize (prin1-to-string value t) 'face
+                (if value 'transient-value 'transient-inactive-value))))
 
 ;;; _
 (provide 'transient)

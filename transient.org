@@ -7,7 +7,7 @@
 #+texinfo_dir_category: Emacs misc features
 #+texinfo_dir_title: Transient: (transient).
 #+texinfo_dir_desc: Transient Commands
-#+subtitle: for version 0.8.8
+#+subtitle: for version 0.9.0
 
 #+setupfile: .orgconfig
 
@@ -20,7 +20,7 @@ resource to get over that hurdle is Psionic K's interactive tutorial,
 available at https://github.com/positron-solutions/transient-showcase.
 
 #+texinfo: @noindent
-This manual is for Transient version 0.8.8.
+This manual is for Transient version 0.9.0.
 
 #+texinfo: @insertcopying
 :END:
@@ -2062,8 +2062,8 @@ object should not affect later invocations.
   take these form:
 
   #+begin_src emacs-lisp
-    ([LEVEL] :info DESCRIPTION [KEYWORD VALUE]...)
-    ([LEVEL] :info* DESCRIPTION [KEYWORD VALUE]...)
+    (:info DESCRIPTION [KEYWORD VALUE]...)
+    (:info* DESCRIPTION [KEYWORD VALUE]...)
   #+end_src
 
   The ~:info~ and ~:info*~ keyword arguments replaces the ~:description~
@@ -2082,6 +2082,25 @@ object should not affect later invocations.
   value of lisp variables.  This class is not fully featured yet and
   it is somewhat likely that future improvements won't be fully
   backward compatible.
+
+- The ~transient-cons-option~ class is intended for situations where
+  ~transient-args~ should return an alist, instead of a list of strings
+  (arguments).  Such suffixes can be specified in prefix definitions
+  like so:
+
+  #+begin_src emacs-lisp
+    (:cons OPTION :key KEY [KEYWORD VALUE]...)
+  #+end_src
+
+  OPTION may be something other than a string, likely a keyword or
+  some other symbol, it is used as the ~car~ of the cons-cell.  When
+  using such an inline definition ~:key~ has to be specified.  In most
+  cases ~:reader~ should also be specified.  When defining such a suffix
+  separately, the "alist key" has to be specified using the ~:variable~
+  keyword argument.
+
+  This class is still experimental it is somewhat likely that future
+  improvements won't be fully backward compatible.
 
 - The ~transient-describe-target~ class is used by the command
   ~transient-describe~.
