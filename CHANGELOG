@@ -1,9 +1,15 @@
 # -*- mode: org -*-
-* v0.9.3    UNRELEASED
+* v0.9.3    2025-07-01
 
 - Improved kludge to work around a bug in Emacs, which may cause
   a subprocess to be killed, when the user types ~C-g~, expecting
   that to quit a transient menu.  #388
+
+- Fixed an edge-case when trying to put point on the same suffix
+  after refreshing the menu.  e508e658
+
+- Removed an unnecessary redraw, which additionally happened too
+  early, before suffixes were refreshed.  #397
 
 * v0.9.2    2025-06-09
 
