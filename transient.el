@@ -8,9 +8,10 @@
 
 ;; Package-Version: 0.10.1
 ;; Package-Requires: (
-;;     (emacs  "28.1")
-;;     (compat "30.1")
-;;     (seq     "2.24"))
+;;     (emacs   "28.1")
+;;     (compat  "30.1")
+;;     (cond-let "0.1")
+;;     (seq      "2.24"))
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -41,6 +42,7 @@
 
 (require 'cl-lib)
 (require 'compat)
+(require 'cond-let)
 (require 'eieio)
 (require 'edmacro)
 (require 'format-spec)
@@ -1263,7 +1265,7 @@ commands are aliases for."
               (setq class v)
             (push k keys)
             (push v keys))))
-      (while-let
+      (while-let*
           ((arg (car args))
            (arg (cond
                  ;; Inline group definition.
@@ -1303,8 +1305,8 @@ commands are aliases for."
   (cl-typecase spec
     (null    (error "Invalid transient--parse-child spec: %s" spec))
     (symbol  (list `',spec))
-    (vector  (and-let* ((c (transient--parse-group  prefix spec))) (list c)))
-    (list    (and-let* ((c (transient--parse-suffix prefix spec))) (list c)))
+    (vector  (and$ (transient--parse-group  prefix spec) (list $)))
+    (list    (and$ (transient--parse-suffix prefix spec) (list $)))
     (string  (list spec))
     (t       (error "Invalid transient--parse-child spec: %s" spec))))
 
@@ -2270,9 +2272,9 @@ of the corresponding object."
                  (error "Cannot bind %S to %s and also %s"
                         (string-trim key) cmd alt))
                 ((define-key map kbd cmd))))))
-    (when-let ((b (keymap-lookup map "-"))) (keymap-set map "<kp-subtract>" b))
-    (when-let ((b (keymap-lookup map "="))) (keymap-set map "<kp-equal>" b))
-    (when-let ((b (keymap-lookup map "+"))) (keymap-set map "<kp-add>" b))
+    (when$ (keymap-lookup map "-") (keymap-set map "<kp-subtract>" $))
+    (when$ (keymap-lookup map "=") (keymap-set map "<kp-equal>" $))
+    (when$ (keymap-lookup map "+") (keymap-set map "<kp-add>" $))
     (when transient-enable-popup-navigation
       ;; `transient--make-redisplay-map' maps only over bindings that are
       ;; directly in the base keymap, so that cannot be a composed keymap.
@@ -2599,8 +2601,8 @@ value.  Otherwise return CHILDREN as is.")
      t)))
 
 (defun transient--inapt-suffix-p (obj)
-  (or (and-let* ((parent (oref obj parent)))
-        (oref parent inapt))
+  (or (and$ (oref obj parent)
+            (oref $ inapt))
       (let ((transient--shadowed-buffer (current-buffer))
             (transient--pending-suffix obj))
         (transient--do-suffix-p
@@ -2641,8 +2643,8 @@ value.  Otherwise return CHILDREN as is.")
 (defun transient--suffix-predicate (spec)
   (let ((props (transient--suffix-props spec)))
     (seq-some (lambda (prop)
-                (and-let* ((pred (plist-get props prop)))
-                  (list prop pred)))
+                (and$ (plist-get props prop)
+                      (list prop $)))
               '( :if :if-not
                  :if-nil :if-non-nil
                  :if-mode :if-not-mode
@@ -5221,8 +5223,8 @@ See `forward-button' for information about N."
       (goto-char (match-beginning 0))))
    (command
     (cl-flet ((found ()
-                (and-let* ((button (button-at (point))))
-                  (eq (button-get button 'command) command))))
+                (and$ (button-at (point))
+                      (eq (button-get $ 'command) command))))
       (while (and (ignore-errors (forward-button 1))
                   (not (found))))
       (unless (found)
@@ -5455,8 +5457,8 @@ as stand-in for elements of exhausted lists."
 
 (cl-defmethod transient-infix-value ((obj transient-cons-option))
   "Return ARGUMENT and VALUE as a cons-cell or nil if the latter is nil."
-  (and-let* ((value (oref obj value)))
-    (cons (oref obj argument) value)))
+  (and$ (oref obj value)
+        (cons (oref obj argument) $)))
 
 (cl-defmethod transient-format-description ((obj transient-cons-option))
   (or (oref obj description)
@@ -5473,6 +5475,13 @@ as stand-in for elements of exhausted lists."
 ;;; _
 (provide 'transient)
 ;; Local Variables:
+;; read-symbol-shorthands: (
+;;   ("and$"         . "cond-let--and$")
+;;   ("and-let"      . "cond-let--and-let")
+;;   ("if-let"       . "cond-let--if-let")
+;;   ("when$"        . "cond-let--when$")
+;;   ("when-let"     . "cond-let--when-let")
+;;   ("while-let"    . "cond-let--while-let"))
 ;; indent-tabs-mode: nil
 ;; checkdoc-symbol-words: ("command-line" "edit-mode" "help-mode")
 ;; End:
