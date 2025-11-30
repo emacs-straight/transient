@@ -4738,7 +4738,7 @@ and its value is returned to the caller."
 
 (cl-defmethod transient-format-description ((obj transient-value-preset))
   (pcase-let* (((eieio description key set) obj)
-               ((eieio value) transient--prefix)
+               (value (transient--get-extended-value))
                (active (seq-set-equal-p set value)))
     (format
      "%s %s"
@@ -5360,7 +5360,7 @@ that binding back, then call this function in your init file like so:
 Individual transients may already bind \\`q' to something else
 and such a binding would shadow the quit binding.  If that is the
 case then \\`Q' is bound to whatever \\`q' would have been bound
-to by setting `transient-substitute-key-function' to a function
+to, by setting `transient-substitute-key-function' to a function
 that does that.  Of course \\`Q' may already be bound to something
 else, so that function binds \\`M-q' to that command instead.
 Of course \\`M-q' may already be bound to something else, but
