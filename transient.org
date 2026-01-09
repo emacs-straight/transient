@@ -535,7 +535,7 @@ Values]], in [[* Using History]] and in [[* Enabling and Disabling Suffixes]].
 
 Two more essential options are documented in [[* Common Suffix Commands]].
 
-- User Option: transient-show-popup ::
+- User Option: transient-show-menu ::
 
   This option controls whether and when transient's menu buffer is
   shown.
@@ -597,7 +597,7 @@ Two more essential options are documented in [[* Common Suffix Commands]].
   from the user.  If ~nil~, there is no initial input and the first
   element has to be accessed the same way as the older elements.
 
-- User Option: transient-enable-popup-navigation ::
+- User Option: transient-enable-menu-navigation ::
 
   This option controls whether navigation commands are enabled in
   transient's menu buffer.  If the value is ~verbose~ (the default),
@@ -673,12 +673,52 @@ Two more essential options are documented in [[* Common Suffix Commands]].
 :UNNUMBERED: notoc
 :END:
 
+For blind users I recommend the following configuration.  If you
+need more guidance or would like to share your experience, please
+don't hesitate to contact me.
+
+#+begin_src emacs-lisp
+  (setopt transient-enable-menu-navigation t) ; the default
+  (setopt transient-select-menu-window t)
+  (setopt transient-force-single-column t)
+  (setopt transient-navigate-to-group-descriptions t)
+#+end_src
+
+Additionally you have allow the command, which you use to read the
+text at point, to be run when a transient menu is active, for example:
+
+#+begin_src emacs-lisp
+  (define-key transient-predicate-map
+    [my-read-text-at-point] #'transient--do-stay)
+#+end_src
+
+- User Option: transient-select-menu-window ::
+
+  This option controls whether the window displaying the transient menu
+  is automatically selected has soon as it is displayed.
+
+  Enabling this is discouraged, except for users of braille output
+  devises.  Note that enabling this, or alternatively selecting the
+  menu window on demand, are both unnecessary, to be able to move
+  the cursor in the menu.  See ~transient-enable-menu-navigation~.
+
 - User Option: transient-force-single-column ::
 
   This option controls whether the use of a single column to display
   suffixes is enforced.  This might be useful for users with low
   vision who use large text and might otherwise have to scroll in two
   dimensions.
+
+- User Option: transient-navigate-to-group-descriptions ::
+
+  This option controls whether menu navigation commands stop at group
+  descriptions.
+
+  If ~transient-enable-menu-navigation~ is non-~nil~, which it is by
+  default, {{{kbd(UP)}}} and {{{kbd(DOWN)}}} move from suffix to suffix.  When this option
+  is non-~nil~ as well, then they additionally stop at group descriptions.
+  This is useful because it allows braille and audio devices to output
+  the group title at point.
 
 *** Auxiliary Options
 :PROPERTIES:
@@ -2346,7 +2386,7 @@ functions use ~describe-function~.
   the mouse.
 
   This function is called when the mouse is moved over a command and
-  (if the value of ~transient-enable-popup-navigation~ is ~verbose~) when
+  (if the value of ~transient-enable-menu-navigation~ is ~verbose~) when
   the user navigates to a command using the keyboard.
 
   If OBJ's ~summary~ slot is a string, that is used.  If ~summary~ is a
