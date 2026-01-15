@@ -523,11 +523,28 @@ See also `transient-align-variable-pitch'."
 (defcustom transient-force-single-column nil
   "Whether to force use of a single column to display suffixes.
 
-This might be useful for users with low vision who use large
-text and might otherwise have to scroll in two dimensions."
+This might be useful for users with low vision who use large text
+and might otherwise have to scroll in two dimensions. This is also
+useful for blind users, because it causes suffixes to be navigated
+in a more natural order."
   :package-version '(transient . "0.3.6")
   :group 'transient
   :type 'boolean)
+
+(defcustom transient-describe-menu nil
+  "Whether to begin the menu buffer with a very short description.
+
+When this is non-nil, then the menu buffer begins with a short
+description.  Ideally this is a string written exactly for that
+purpose, but because this is a new feature, most menu commands
+do not provide that yet.  In that case the first line of its
+docstring is used as fallback.  If the value is `docstring',
+then the docstring is used even if a description is available."
+  :package-version '(transient . "0.13.0")
+  :group 'transient
+  :type '(choice (const :tag "Insert description" t)
+                 (const :tag "Insert docstring summary" docstring)
+                 (const :tag "Do not insert description" nil)))
 
 (defconst transient--max-level 7)
 (defconst transient--default-child-level 1)
@@ -827,6 +844,7 @@ If `transient-save-history' is nil, then do nothing."
    (history     :initarg :history     :initform nil)
    (history-pos :initarg :history-pos :initform 0)
    (history-key :initarg :history-key :initform nil)
+   (description :initarg :description :initform nil)
    (show-help   :initarg :show-help   :initform nil)
    (info-manual :initarg :info-manual :initform nil)
    (man-page    :initarg :man-page    :initform nil)
@@ -4557,6 +4575,21 @@ have a history of their own.")
     (setq display-line-numbers nil)
     (setq show-trailing-whitespace nil)
     (run-hooks 'transient-setup-buffer-hook))
+  (when transient-describe-menu
+    (let* ((command (oref transient--prefix command))
+           (desc (propertize
+                  (or (and (not (eq transient-describe-menu 'docstring))
+                           (oref transient--prefix description))
+                      (and$ (documentation command)
+                            (car (split-string $ "\n")))
+                      (symbol-name command))
+                  'face 'transient-heading)))
+      (when (string-suffix-p "." desc)
+        (setq desc (substring desc 0 -1)))
+      (insert (if transient-navigate-to-group-descriptions
+                  (make-text-button desc nil)
+                desc))
+      (insert "\n\n")))
   (transient--insert-groups)
   (when (or transient--helpp transient--editp)
     (transient--insert-help))
@@ -5271,8 +5304,8 @@ See `backward-button' for information about N."
   (with-selected-window transient--window
     (backward-button n t)
     (when-let ((_(eq transient-enable-menu-navigation 'verbose))
-               (summary (get-text-property (point) 'suffix)))
-      (transient-show-summary summary))))
+               (obj (get-text-property (point) 'suffix)))
+      (transient-show-summary obj))))
 
 (defun transient-forward-button (n)
   "Move to the next button in transient's menu buffer.
@@ -5281,8 +5314,8 @@ See `forward-button' for information about N."
   (with-selected-window transient--window
     (forward-button n t)
     (when-let ((_(eq transient-enable-menu-navigation 'verbose))
-               (summary (get-text-property (point) 'suffix)))
-      (transient-show-summary summary))))
+               (obj (get-text-property (point) 'suffix)))
+      (transient-show-summary obj))))
 
 (define-button-type 'transient
   'face nil
