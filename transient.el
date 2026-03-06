@@ -2960,13 +2960,23 @@ value.  Otherwise return CHILDREN as is.")
   (if (not transient--prefix)
       (funcall fn)
     (transient--suspend-override (bound-and-true-p edebug-active))
-    (funcall fn) ; Already unwind protected.
-    (cond ((memq this-command '(top-level abort-recursive-edit))
-           (setq transient--exitp t)
-           (transient--post-exit this-command)
-           (transient--delete-window))
-          (transient--prefix
-           (transient--resume-override)))))
+    (condition-case err
+        (unwind-protect
+            (funcall fn)
+          (cond
+            ((memq this-command '(top-level abort-recursive-edit))
+             (setq transient--exitp t)
+             (transient--post-exit this-command)
+             (transient--delete-window)
+             (transient--debug "     abort recursive-edit and menu "))
+            (transient--prefix
+             (transient--resume-override)
+             (transient--debug "     exit recursive-edit and resumed menu"))))
+      (error (if (and (eq (car err) 'error)
+                      (stringp (cadr err))
+                      (string-prefix-p "Abort" (cadr err)))
+                 (message "%s" (cadr err))
+               (message "transient--recursive-edit: %S" err))))))
 
 (defmacro transient--with-suspended-override (&rest body)
   (let ((depth (make-symbol "depth"))
@@ -3279,7 +3289,11 @@ identifying the exit."
     (transient--post-exit this-command)))
 
 (defun transient--quit-kludge (action)
-  (static-if (boundp 'redisplay-can-quit) ;Emacs 31
+  ;; Fixing the bug that makes this kludge necessary was proposed in
+  ;; https://yhetil.org/emacs-bugs/m1ikl4iqtg.fsf@dancol.org/, but it
+  ;; does not look like that's gonna be merged any time soon.  See also
+  ;; https://github.com/magit/transient/commit/45fbefdc5b112f0a15cd9365.
+  (static-if (boundp 'redisplay-can-quit)
       action
     (pcase-exhaustive action
       ('enable
@@ -3982,8 +3996,9 @@ it\", in which case it is pointless to preserve history.)"
                                          (eq value (car transient--history)))
                                      transient--history
                                    (cons value transient--history)))
-             (initial-input (and transient-read-with-initial-input
-                                 (car transient--history)))
+             (initial-input (or value
+                                (and transient-read-with-initial-input
+                                     (car transient--history))))
              (history (if initial-input
                           (cons 'transient--history 1)
                         'transient--history))
@@ -4085,6 +4100,20 @@ stand-alone command."
   (require 'org)
   (when (fboundp 'org-read-date)
     (org-read-date 'with-time nil nil prompt default-time)))
+
+(static-if (fboundp 'string-edit) ; since Emacs 29.1
+    (defun transient-read-string-from-buffer (prompt value _)
+      "Switch to a new buffer to edit STRING in a recursive edit.
+Like `read-string-from-buffer' but accept an additional argument as
+provided by `transient-infix-read' (but ignore it).  Only available
+when using Emacs 29.1 or greater."
+      (string-edit prompt (or value "")
+                   (lambda (edited)
+                     (setq value edited)
+                     (exit-recursive-edit))
+                   :abort-callback #'exit-recursive-edit)
+      (recursive-edit)
+      value))
 
 ;;;; Prompt
 
@@ -4578,7 +4607,7 @@ have a history of their own.")
                             'transient-display-buffer-action))
                (transient-display-buffer-action))))
     (when (and (assq 'pop-up-frame-parameters (cdr action))
-               (fboundp 'buffer-line-statistics)) ; Emacs >= 28.1
+               (fboundp 'buffer-line-statistics)) ; since Emacs 28.1
       (setq action (copy-tree action))
       (pcase-let ((`(,height ,width)
                    (buffer-line-statistics transient--buffer))
