@@ -135,7 +135,9 @@ from Emacs commit e680827e814e155cf79175d87ff7c6ee3a08b69a."
          ,(macroexp-progn body))
      ((debug error)
       (transient--emergency-exit ,id)
-      (signal (car err) (cdr err)))))
+      (static-if (fboundp 'error-type-p) ; since Emacs 31.1
+          (signal err)
+        (signal (car err) (cdr err))))))
 
 (defun transient--exit-and-debug (&rest args)
   (transient--emergency-exit :debugger)
@@ -3986,7 +3988,9 @@ it\", in which case it is pointless to preserve history.)"
              (reader (oref obj reader))
              (choices (if (functionp choices) (funcall choices) choices))
              (prompt (transient-prompt obj))
-             (value (if multi-value (string-join value ",") value))
+             (value (if (and multi-value value)
+                        (string-join value ",")
+                      value))
              (history-key (or (oref obj history-key)
                               (oref obj command)))
              (transient--history (alist-get history-key transient-history))
