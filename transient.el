@@ -6,7 +6,7 @@
 ;; Homepage: https://github.com/magit/transient
 ;; Keywords: extensions
 
-;; Package-Version: 0.13.2
+;; Package-Version: 0.13.3
 ;; Package-Requires: (
 ;;     (emacs   "28.1")
 ;;     (compat  "31.0")
@@ -44,7 +44,7 @@
 
 ;;; Code:
 
-(defconst transient-version "0.13.2")
+(defconst transient-version "0.13.3")
 
 (require 'cl-lib)
 (require 'compat)
@@ -3904,7 +3904,7 @@ Call `transient-default-value' but because that is a noop for
                                 (match-string 1 v)))))
               (if multi-value
                   (delq nil (mapcar match value))
-                (cl-some match value)))))))
+                (seq-some match value)))))))
 
 (cl-defmethod transient-init-value ((obj transient-switch))
   "Extract OBJ's value from the value of the prefix object."
@@ -4451,9 +4451,10 @@ Append \"=\ to ARG to indicate that it is an option."
   (when-let* ((_ transient--stack)
               (command (oref obj command))
               (suffix-obj (transient-suffix-object command))
-              (_(memq (if (slot-boundp suffix-obj 'transient)
-                          (oref suffix-obj transient)
-                        (oref transient-current-prefix transient-suffix))
+              (_(memq (cond ((slot-boundp suffix-obj 'transient)
+                             (oref suffix-obj transient))
+                            (transient-current-prefix
+                             (oref transient-current-prefix transient-suffix)))
                       (list t 'recurse #'transient--do-recurse))))
     (oset obj return t)))
 
