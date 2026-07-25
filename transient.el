@@ -3904,7 +3904,7 @@ Call `transient-default-value' but because that is a noop for
                                 (string-match regexp v)
                                 (match-string 1 v)))))
               (if multi-value
-                  (seq-filter match value)
+                  (seq-keep match value)
                 (seq-some match value)))))))
 
 (cl-defmethod transient-init-value ((obj transient-switch))
@@ -4347,7 +4347,7 @@ Unlike `transient-get-value' also include the values of inactive and
 inapt arguments.  This function is mainly intended for internal use.
 It is used to preserve the full value when a menu is being refreshed,
 including the presently ineffective parts."
-  (transient--with-emergency-exit :get-value
+  (transient--with-emergency-exit :get-extended-value
     (mapcan #'transient--get-wrapped-value transient--suffixes)))
 
 (defun transient--get-savable-value ()
