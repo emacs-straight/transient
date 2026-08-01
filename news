@@ -3,10 +3,15 @@
 
 - When a group would be empty because all its suffixes are inactive
   (due to ~:if*~ predicates or their ~:level~), then it is no longer
-  inserted at all.
+  inserted at all.  d5514493
+
+- Added new ~claim-argument~ suffix slot, which helps avoid conflicts
+  between overlapping suffixes, such as ~--push-option=known=<val>~
+  and ~--push-option=<arbitrary>~.  f772690e
 
 - Fixed a regression introduced in v0.13.4, which caused set and
   saved values to be corrupted for some multi-value arguments.
+  7600a430
 
 * v0.13.5   2026-07-01
 
@@ -111,11 +116,5 @@ not (primarily) concern accessibility.
 - If an error occurred because of a window misconfiguration by some
   third-party code, that could cause the transient menu to enter an
   inconsistent state, because we did not protect all the places where
-  that could result in an error.  8b142031, #429
-
-- Restored compatibility with the ~emoji.el~ that ships with Emacs
-  29.4.  #417
-
-* v0.12.0    2026-01-01
 ...
 ...
