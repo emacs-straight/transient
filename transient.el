@@ -2288,6 +2288,8 @@ For historic reasons \\`C-x' is used by default, but users are
 encouraged to pick another key, preferably one that is not commonly used
 in Emacs but is still convenient to them.  See info node `(transient)
 Common Suffix Commands'."
+  :package-version '(transient . "0.8.8")
+  :group 'transient
   :type 'key
   :initialize (lambda (symbol exp)
                 (custom-initialize-default symbol exp)
@@ -5792,7 +5794,24 @@ as stand-in for elements of exhausted lists."
       "unset")))
 
 ;;; _
+
+(add-to-list 'customize-package-emacs-version-alist
+             '(transient
+               ("0.1.0"  . "28.1")
+               ("0.2.0"  . "28.1")
+               ("0.3.6"  . "28.1")
+               ("0.4.0"  . "29.1")
+               ("0.5.0"  . "30.1")
+               ("0.7.5"  . "31.1")
+               ("0.7.8"  . "31.1")
+               ("0.8.0"  . "31.1")
+               ("0.8.1"  . "31.1")
+               ("0.8.4"  . "31.1")
+               ("0.8.8"  . "31.1")
+               ("0.13.0" . "31.1")))
+
 (provide 'transient)
+
 ;; Local Variables:
 ;; checkdoc-symbol-words: ("command-line" "edit-mode" "help-mode")
 ;; indent-tabs-mode: nil
