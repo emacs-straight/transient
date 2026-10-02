@@ -1,4 +1,9 @@
 # -*- mode: org -*-
+* v0.13.9   UNRELEASED
+
+- In menus that fully refresh after every command, it was not possible
+  to chain multiple prefix argument commands.  03c8ccc
+
 * v0.13.8   2026-09-01
 
 - Thoughts and whitespace.
@@ -30,7 +35,7 @@
 
 - Thoughts and whitespace.
 
-* v0.13.3    2026-05-07
+* v0.13.3   2026-05-07
 
 - Stopped needlessly using ~this-single-command-raw-keys~.  #442
 
@@ -39,15 +44,15 @@
 
 - Started using new functions added in Emacs 31.
 
-* v0.13.2    2026-05-01
+* v0.13.2   2026-05-01
 
 - Fixed an incompatibility with development version of Compat.
 
-* v0.13.1    2026-05-01
+* v0.13.1   2026-05-01
 
 - Improved making a kludge subject only to affected Emacsen.
 
-* v0.13.0    2026-04-22
+* v0.13.0   2026-04-22
 
 This release adds features useful for visually impaired users.
 The relevant options and recommended settings are documented in
@@ -119,7 +124,5 @@ not (primarily) concern accessibility.
 
 - If an error occurred in a command implemented in C or in an
   anonymous commands, that could cause the transient menu to enter
-  an inconsistent state, because we failed to adequately advise
-  such commands, to protect against that possibility.  63f90723 ff
 ...
 ...
