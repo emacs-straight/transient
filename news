@@ -1,4 +1,10 @@
 # -*- mode: org -*-
+* v0.14.0   UNRELEASED
+
+- While still only autoloaded, prefix and suffix commands lacked
+  function documentation.  (If a package, such as Magit, still
+  supports Emacs 29 or even older, then that still is the case.)
+
 * v0.13.9   2026-11-01
 
 - In menus that fully refresh after every command, it was not possible
@@ -118,11 +124,5 @@ not (primarily) concern accessibility.
 - Fixed how the list of suffixes is build, an issue which could
   cause ~transient-suffix-object~ to return ~nil~ instead of the object.
   https://github.com/magit/magit/issues/5528
-
-- When the value of a suffix contained newline characters, then all
-  but the first line was discarded.  #433
-
-- If an error occurred in a command implemented in C or in an
-  anonymous commands, that could cause the transient menu to enter
 ...
 ...
