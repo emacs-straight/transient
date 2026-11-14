@@ -976,6 +976,9 @@ the prototype is stored in the clone's `prototype' slot.")
     :documentation "Enable if level of prefix is equal or greater.")
    (inactive
     :initform nil)
+   (hide
+    :initarg :hide
+    :initform nil)
    (if
     :initarg :if
     :initform nil
@@ -1152,7 +1155,6 @@ They become the value of this argument.")
 
 (defclass transient-group (transient-child)
   ((suffixes       :initarg :suffixes       :initform nil)
-   (hide           :initarg :hide           :initform nil)
    (description    :initarg :description    :initform nil)
    (pad-keys       :initarg :pad-keys       :initform nil)
    (info-format    :initarg :info-format    :initform nil)
@@ -4792,13 +4794,7 @@ have a history of their own.")
      ,@body))
 
 (defun transient--insert-groups ()
-  (let ((groups (mapcan (lambda (group)
-                          (let ((hide (oref group hide)))
-                            (and (not (and (functionp hide)
-                                           (transient-with-shadowed-buffer
-                                             (funcall hide))))
-                                 (list group))))
-                        transient--layout)))
+  (let ((groups (seq-remove #'transient--hidden-child transient--layout)))
     (while-let ((group (pop groups)))
       (when (transient--active-suffixes group)
         (transient--insert-group group)
@@ -4808,8 +4804,16 @@ have a history of their own.")
 (defun transient--active-suffixes (group)
   (seq-remove (lambda (suffix)
                 (and (cl-typep suffix 'transient-suffix)
-                     (oref suffix inactive)))
+                     (or (oref suffix inactive)
+                         (transient--hidden-child suffix))))
               (oref group suffixes)))
+
+(defun transient--hidden-child (child)
+  (let ((hide (oref child hide)))
+    (if (functionp hide)
+        (transient-with-shadowed-buffer
+          (funcall hide))
+      hide)))
 
 (defvar transient--max-group-level 1)
 
@@ -5589,8 +5593,7 @@ With a prefix argument, do an incremental regular expression
 search instead."
   (interactive "P")
   (transient--isearch-setup)
-  (let ((isearch-mode-map transient--isearch-mode-map))
-    (isearch-mode nil regexp-p)))
+  (isearch-mode nil regexp-p))
 
 (defun transient-isearch-forward (&optional regexp-p)
   "Do incremental search forward.
@@ -5598,8 +5601,7 @@ With a prefix argument, do an incremental regular expression
 search instead."
   (interactive "P")
   (transient--isearch-setup)
-  (let ((isearch-mode-map transient--isearch-mode-map))
-    (isearch-mode t regexp-p)))
+  (isearch-mode t regexp-p))
 
 (defun transient-isearch-exit ()
   "Like `isearch-exit' but adapted for `transient'."
@@ -5626,6 +5628,7 @@ search instead."
 
 (defun transient--isearch-setup ()
   (select-window transient--window)
+  (setq-local isearch-mode-map transient--isearch-mode-map)
   (transient--suspend-override t))
 
 (defun transient--isearch-exit ()

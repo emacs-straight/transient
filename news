@@ -5,6 +5,14 @@
   function documentation.  (If a package, such as Magit, still
   supports Emacs 29 or even older, then that still is the case.)
 
+- Individual suffix commands can now be hidden, using the new ~hide~
+  slot.  Hidden commands remain available, they are just not shown
+  in the menu.  #422.
+
+- Using ~isearch-edit-string~ from an Isearch session, used to search
+  in a menu, resulted in Transient key bindings not being restored,
+  when exiting Isearch.  #453
+
 * v0.13.9   2026-11-01
 
 - In menus that fully refresh after every command, it was not possible
@@ -115,14 +123,5 @@ not (primarily) concern accessibility.
   ~always-read~ slot is non-nil.  cde0756f
 
 - Fixed exiting from ~recursive-edit~ to a transient menu.  #425
-
-- Added new function ~transient-read-string-from-buffer~.  0e65f5da
-
-- Addressed an incompatibility with third-party help extensions.
-  #431
-
-- Fixed how the list of suffixes is build, an issue which could
-  cause ~transient-suffix-object~ to return ~nil~ instead of the object.
-  https://github.com/magit/magit/issues/5528
 ...
 ...
